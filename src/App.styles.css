@@ -1,0 +1,16 @@
+.appContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appContent {
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--color-brand-100);
+
+  flex: auto;
+
+  overflow-y: auto;
+}

@@ -1,3 +1,54 @@
+*:root {
+  --color-brand-100: #d5dcee;
+  --color-brand-200: #aab9dd;
+  --color-brand-300: #8096cc;
+  --color-brand-400: #5573bb;
+  --color-brand-500: #2b50aa;
+  --color-brand-600: #224088;
+  --color-brand-700: #1a3066;
+  --color-brand-800: #112044;
+  --color-brand-900: #091022;
+
+  /* White */
+  --color-white-0: #fff;
+  --color-white-100: #fdfffc;
+  --color-white-200: #fcfffb;
+  --color-white-300: #fbfff8;
+  --color-white-400: #f9fff6;
+  --color-white-500: #f8fff4;
+  --color-white-600: #c6ccc3;
+  --color-white-700: #959992;
+  --color-white-800: #636662;
+  --color-white-900: #323331;
+
+  /* Gold */
+  --color-gold-100: #f8f9d3;
+  --color-gold-300: #f3f5b8;
+  --color-gold-500: #f0f2a6;
+  --color-gold-700: #c0c285;
+
+  /* Red */
+  --color-red-100: #ffdfdf;
+  --color-red-400: #f5685e;
+  --color-red-600: #db2727;
+  --color-red-700: #b91c1c;
+  --color-red-800: #991b1b;
+
+  /* Green */
+  --color-green-300: #69db7c;
+  --color-green-500: #2b8a3e;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 2.4rem 3.2rem rgba(0, 0, 0, 0.12);
+
+  /* Radius */
+  --border-radius-sm: 3px;
+  --border-radius-md: 5px;
+  --border-radius-lg: 7px;
+}
+
 *,
 *::before,
 *::after {
@@ -13,7 +64,7 @@ html {
 
 body {
   font-family: 'Bitter', sans-serif;
-  color: var(--color-brand-300);
+  color: var(--color-brand-800);
   transition:
     color 0.3s,
     background-color 0.3s;

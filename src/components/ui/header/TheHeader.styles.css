@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 3.2rem 6.2rem;
+
+  width: 100vw;
+
+  position: relative;
+
+  background-color: var(--color-brand-300);
+  box-shadow: var(--shadow-md);
+
+  font-weight: 700;
+  font-size: 2.4rem;
+
+  border-bottom: 2px solid var(--color-brand-400);
+
+  z-index: 5;
+}
+
+.headerHome {
+  display: flex;
+  gap: 2.4rem;
+
+  text-decoration: none;
+
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.3s;
+
+  color: var(--color-brand-700);
+}
+
+.headerHome > svg {
+  transform: scale(200%);
+}
+
+.headerHome:hover {
+  transform: scale(105%);
+  color: var(--color-brand-600);
+}
+
+.navLinksContainer {
+  display: flex;
+  gap: 6.4rem;
+
+  align-items: center;
+}

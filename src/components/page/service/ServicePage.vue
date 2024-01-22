@@ -8,4 +8,4 @@
 import ServiceItem from '../../feature/service/ServiceItem.vue'
 </script>
 
-<style src="./ServicePage.styles.css" module />
+<style src="../../../styles/Page.styles.css" module />

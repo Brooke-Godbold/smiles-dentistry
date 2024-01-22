@@ -1,3 +1,41 @@
 .serviceImage {
-  max-width: 100%;
+  width: 75%;
+  height: 100%;
+  object-fit: cover;
+
+  position: absolute;
+}
+
+.serviceImageGradient {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  background-image: linear-gradient(to right, transparent, var(--color-brand-700) 45%);
+}
+
+.serviceContainer {
+  position: relative;
+}
+
+.serviceInformation {
+  padding: 3.2rem;
+  padding-top: 4.8rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+
+  align-items: flex-end;
+
+  position: relative;
+  z-index: 1;
+
+  color: var(--color-brand-200);
+}
+
+.serviceText {
+  width: 50%;
+  text-align: end;
 }
