@@ -8,8 +8,8 @@
       <router-link
         v-for="navLink in navLinks"
         :class="$style.headerNavLink"
-        :key="navLink.route"
-        :to="{ name: navRoute, params: { serviceId: navLink.route } }"
+        :key="navLink.params"
+        :to="{ name: navLink.navRoute, params: navLink.params }"
         @click="setIsActive(false)"
         >{{ navLink.name }}</router-link
       >
@@ -22,8 +22,7 @@ import { ref } from 'vue'
 
 defineProps({
   navLinks: Array,
-  navTitle: String,
-  navRoute: String
+  navTitle: String
 })
 
 const isActive = ref(false)

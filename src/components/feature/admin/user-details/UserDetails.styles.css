@@ -1,0 +1,16 @@
+.userDetails {
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr;
+
+  gap: 1.2rem;
+}
+
+.userEmail {
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-brand-100);
+  color: var(--color-brand-500);
+  border: 2px solid var(--color-brand-500);
+
+  text-align: center;
+  padding-top: 0.8rem;
+}

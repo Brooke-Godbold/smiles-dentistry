@@ -1,0 +1,45 @@
+.textareaContainer {
+  width: 100%;
+
+  position: relative;
+}
+
+.textarea {
+  font-family: inherit;
+  font-size: 1.6rem;
+  font-weight: 600;
+
+  border: 2px solid var(--color-brand-300);
+  border-radius: var(--border-radius-sm);
+
+  background-color: var(--color-brand-200);
+  color: var(--color-brand-500);
+
+  width: 100%;
+  min-height: 20rem;
+
+  padding: 0.8rem 1.2rem;
+
+  resize: none;
+}
+
+.textarea:disabled {
+  background-color: var(--color-white-600);
+  color: var(--color-white-500);
+  border: 2px solid var(--color-white-700);
+
+  cursor: auto;
+}
+
+.error {
+  border: 3px solid var(--color-red-600);
+}
+
+.errorMessage {
+  font-size: 1.2rem;
+  color: var(--color-red-600);
+
+  text-align: right;
+
+  width: 100%;
+}

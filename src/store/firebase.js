@@ -1,15 +1,28 @@
 import { defineStore } from 'pinia'
 import { initializeApp } from 'firebase/app'
-import { getFirestore } from 'firebase/firestore'
+import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getStorage } from 'firebase/storage'
 
 export const useFirebaseStore = defineStore('firebaseStore', {
   state: () => {
     return {
-      db: null
+      db: null,
+      auth: null,
+      storage: null,
+      isAuthenticated: false,
+      isInitializing: true,
+      user: null,
+      profile: null
     }
   },
   getters: {
-    firebaseDatabase: (state) => state.db
+    firebaseDatabase: (state) => state.db,
+    firebaseAuth: (state) => state.auth,
+    authenticated: (state) => state.isAuthenticated,
+    initializing: (state) => state.isInitializing,
+    userEmail: (state) => state.user?.email,
+    userProfile: (state) => state.profile
   },
   actions: {
     connectToFirebase() {
@@ -27,6 +40,46 @@ export const useFirebaseStore = defineStore('firebaseStore', {
       const app = initializeApp(firebaseConfig)
 
       this.db = getFirestore(app)
+      this.auth = getAuth(app)
+      this.storage = getStorage(app)
+
+      onAuthStateChanged(this.auth, (user) => {
+        if (this.isInitializing) this.isInitializing = false
+
+        if (user) {
+          this.isAuthenticated = true
+          this.user = user
+          this.refreshUserProfile()
+        } else {
+          this.isAuthenticated = false
+          this.user = null
+          this.profile = null
+        }
+      })
+    },
+    async refreshUserProfile() {
+      const docRef = doc(this.db, 'profile', this.userEmail)
+      if (!docRef) return
+
+      const docSnap = await getDoc(docRef)
+      const data = docSnap?.data()
+
+      this.profile = data
+    },
+    getCurrentUser() {
+      return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(
+          this.auth,
+          async (user) => {
+            if (user) {
+              await this.refreshUserProfile()
+            }
+            unsubscribe()
+            resolve(user)
+          },
+          reject
+        )
+      })
     }
   }
 })

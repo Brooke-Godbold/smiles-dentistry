@@ -2,11 +2,13 @@
   cursor: pointer;
 
   transition: all 0.3s;
+
+  color: var(--color-brand-600);
 }
 
 .headerNavActive {
   transform: scale(105%);
-  color: var(--color-brand-600);
+  color: var(--color-brand-500);
 }
 
 .headerNavDropdown {
@@ -27,10 +29,12 @@
   padding: 3.2rem;
   padding-top: 5.4rem;
 
-  background-color: var(--color-brand-300);
+  background-image: linear-gradient(to bottom, transparent, var(--color-brand-300) 45%);
   border-radius: var(--border-radius-sm);
 
   font-size: 1.8rem;
+
+  border-bottom: 2px solid var(--color-brand-400);
 }
 
 .active {
@@ -43,12 +47,12 @@
 
 .headerNavLink {
   text-decoration: none;
-  color: var(--color-brand-700);
+  color: var(--color-brand-600);
 
   transition: all 0.3s;
 }
 
 .headerNavLink:hover {
-  color: var(--color-brand-600);
+  color: var(--color-brand-500);
   transform: scale(105%);
 }

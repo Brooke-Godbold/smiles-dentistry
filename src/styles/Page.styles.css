@@ -23,3 +23,7 @@
     padding: 1.2rem;
   }
 }
+
+.center {
+  justify-content: center;
+}
