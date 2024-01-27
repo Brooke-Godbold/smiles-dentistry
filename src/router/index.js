@@ -10,6 +10,10 @@ const NewAppointment = () => import('../components/page/appointment/NewAppointme
 const Profile = () => import('../components/page/profile/ProfilePage.vue')
 const ProfileDetails = () =>
   import('../components/feature/profile/profile-details/ProfileDetails.vue')
+const UserAppointments = () =>
+  import('../components/feature/profile/user-appointments/UserAppointments.vue')
+const StaffAppointments = () =>
+  import('../components/feature/profile/staff-appointments/StaffAppointments.vue')
 
 const Admin = () => import('../components/page/admin/AdminPage.vue')
 const UserManagement = () =>
@@ -33,7 +37,14 @@ const router = createRouter({
       meta: { userAccess: true },
       children: [
         { path: '', redirect: { name: 'ProfileDetails' } },
-        { path: 'details', name: 'ProfileDetails', component: ProfileDetails }
+        { path: 'details', name: 'ProfileDetails', component: ProfileDetails },
+        { path: 'appointments', name: 'UserAppointments', component: UserAppointments },
+        {
+          path: 'upcoming-appointments',
+          name: 'StaffAppointments',
+          component: StaffAppointments,
+          meta: { staffAccess: true }
+        }
       ]
     },
     {
@@ -57,6 +68,19 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'NotFound' })
     } else {
       if (firebase.userProfile?.role !== 'admin') {
+        next({ name: 'NotFound' })
+      } else {
+        next()
+      }
+    }
+  } else if (to.matched.some((route) => route.meta.staffAccess)) {
+    if (!(await firebase.getCurrentUser())) {
+      next({ name: 'NotFound' })
+    } else {
+      if (
+        firebase.userProfile?.role !== 'staff' ||
+        firebase.userProfile?.services.includes('reception')
+      ) {
         next({ name: 'NotFound' })
       } else {
         next()

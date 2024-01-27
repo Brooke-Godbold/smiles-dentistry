@@ -1,3 +1,9 @@
+.selectContainer {
+  width: 100%;
+
+  position: relative;
+}
+
 .select {
   font-family: inherit;
   font-size: 1.6rem;
@@ -14,4 +20,10 @@
   padding: 0.5rem 0.8rem;
 
   text-align: center;
+}
+
+.input:disabled {
+  background-color: var(--color-white-600);
+  color: var(--color-white-500);
+  border: 2px solid var(--color-white-700);
 }

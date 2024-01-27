@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 import { useFirebaseStore } from '@/store/firebase'
 import { collection, getDocs, query, where } from 'firebase/firestore'
@@ -49,7 +49,22 @@ const services = ref([])
 const staff = ref([])
 
 const admin = ref([{ navRoute: 'UserManagement', name: 'User Management' }])
-const profile = ref([{ navRoute: 'ProfileDetails', name: 'Profile Details' }])
+const profile = ref([])
+
+watch(
+  () => firebase.userProfile,
+  (newProfile) => {
+    if (!newProfile) return
+
+    profile.value = [
+      { navRoute: 'ProfileDetails', name: 'Profile Details' },
+      { navRoute: 'UserAppointments', name: 'My Appointments' },
+      firebase.userProfile.role === 'staff'
+        ? { navRoute: 'StaffAppointments', name: 'Upcoming Appointments' }
+        : []
+    ]
+  }
+)
 
 async function getServices() {
   const docs = await getDocs(collection(firebase.firebaseDatabase, 'service'))

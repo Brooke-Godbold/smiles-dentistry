@@ -9,7 +9,7 @@
         <h2>{{ staffData.qualification }}</h2>
         <div :class="$style.servicesContainer">
           <span v-for="service in staffData.services" :key="service" :class="$style.serviceTag">
-            {{ `${service.charAt(0).toUpperCase()}${service.slice(1)}` }}
+            {{ `${service.charAt(0).toUpperCase()}${service.slice(1)}s` }}
           </span>
         </div>
         <p :class="$style.staffText">{{ staffData.bio }}</p>

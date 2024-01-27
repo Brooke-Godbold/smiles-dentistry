@@ -57,11 +57,11 @@
       <div :class="$style.servicesSection">
         <div :class="$style.serviceSelection">
           <label>Check-Ups</label>
-          <BaseInput type="checkbox" value="checkups" v-model="services" />
+          <BaseInput type="checkbox" value="checkup" v-model="services" />
         </div>
         <div :class="$style.serviceSelection">
           <label>Extractions</label>
-          <BaseInput type="checkbox" value="extractions" v-model="services" />
+          <BaseInput type="checkbox" value="extraction" v-model="services" />
         </div>
         <div :class="$style.serviceSelection">
           <label>Receptionist</label>

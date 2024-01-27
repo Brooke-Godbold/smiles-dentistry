@@ -1,0 +1,6 @@
+.appointmentItem {
+  width: 100%;
+  border: 7px double var(--color-brand-400);
+
+  background-color: var(--color-brand-100);
+}

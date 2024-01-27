@@ -4,10 +4,16 @@ export const useNewAppointmentStore = defineStore('newAppointmentStore', {
   state: () => {
     return {
       details: {
-        service: ''
+        service: '',
+        date: null,
+        time: null,
+        staff: ''
       },
       patient: {
-        firstName: ''
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: ''
       }
     }
   },
@@ -16,14 +22,34 @@ export const useNewAppointmentStore = defineStore('newAppointmentStore', {
     newAppointmentPatient: (state) => state.patient
   },
   actions: {
-    updateAppointmentDetails(service) {
+    updateAppointmentDetails(service, date, time, staff) {
       this.details = {
-        service
+        service,
+        date,
+        time,
+        staff
       }
     },
-    updateAppointmentPatient(firstName) {
+    updateAppointmentPatient(firstName, lastName, email, phone) {
       this.patient = {
-        firstName
+        firstName,
+        lastName,
+        email,
+        phone
+      }
+    },
+    resetAppointmentCache() {
+      this.details = {
+        service: '',
+        date: null,
+        time: null,
+        staff: ''
+      }
+      this.patient = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: ''
       }
     }
   }
