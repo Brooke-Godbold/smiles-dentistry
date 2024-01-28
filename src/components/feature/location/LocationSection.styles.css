@@ -1,0 +1,68 @@
+.locationSection {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.locationContainer {
+  height: 100%;
+  width: 100%;
+
+  height: 60rem;
+
+  position: relative;
+}
+
+.mapsContainer {
+  width: 70%;
+  height: 100%;
+
+  position: absolute;
+}
+
+.locationGradient {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+
+  top: 0;
+
+  background-image: linear-gradient(to right, transparent, var(--color-brand-700) 65%);
+
+  pointer-events: none;
+}
+
+.addressSection {
+  font-size: 1.8rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+
+  gap: 1.6rem;
+}
+
+.locationInformation {
+  padding: 3.2rem;
+  padding-top: 4.8rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.6rem;
+
+  align-items: flex-end;
+
+  position: relative;
+  z-index: 1;
+
+  color: var(--color-brand-200);
+}
+
+.locationText {
+  width: 30%;
+  text-align: end;
+}

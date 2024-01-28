@@ -1,0 +1,24 @@
+.newsletterSection {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.newsletterSignup {
+  padding: 3.2rem 12.8rem;
+
+  width: 100%;
+
+  background-color: var(--color-brand-200);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3.2rem;
+
+  border: 7px double var(--color-brand-400);
+}

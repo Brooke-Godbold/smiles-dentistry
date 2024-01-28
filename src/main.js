@@ -9,6 +9,8 @@ import { createPinia } from 'pinia'
 import { RiStarSmileFill } from 'oh-vue-icons/icons'
 import { OhVueIcon, addIcons } from 'oh-vue-icons'
 
+import VueGoogleMaps from 'vue-google-maps-community-fork'
+
 addIcons(RiStarSmileFill)
 
 const store = createPinia()
@@ -16,6 +18,12 @@ const app = createApp(App)
 
 app.use(store)
 app.use(router)
+
+app.use(VueGoogleMaps, {
+  load: {
+    key: import.meta.env.VITE_GOOGLE_API_KEY
+  }
+})
 
 app.component('v-icon', OhVueIcon)
 
