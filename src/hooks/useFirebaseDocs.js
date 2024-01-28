@@ -17,6 +17,7 @@ export function useFirebaseDocs() {
 
   const loadSingleDoc = async (collectionId, docId) => {
     loading.value = true
+    error.value = false
 
     try {
       const docRef = doc(firebase.firebaseDatabase, collectionId, docId)
@@ -31,6 +32,7 @@ export function useFirebaseDocs() {
 
   const loadMultipleDocs = async (collectionId, queries) => {
     loading.value = true
+    error.value = false
 
     try {
       const docRef = collection(firebase.db, collectionId)
@@ -58,6 +60,7 @@ export function useFirebaseDocs() {
 
   const addDoc = async (collectionId, docId, data) => {
     loading.value = true
+    error.value = false
 
     try {
       const userRef = doc(firebase.db, collectionId, docId)
@@ -71,6 +74,7 @@ export function useFirebaseDocs() {
 
   const uploadToStorageBucket = async (file, filename) => {
     loading.value = true
+    error.value = false
 
     try {
       const storageRef = firebaseRef(firebase.storage, filename)
@@ -85,9 +89,10 @@ export function useFirebaseDocs() {
   }
 
   const refreshUserProfile = async () => {
-    loadingProfile.value = true
-
     const firebase = useFirebaseStore()
+
+    loadingProfile.value = true
+    error.value = false
 
     try {
       const docRef = doc(firebase.firebaseDatabase, 'profile', firebase.userEmail)
@@ -106,6 +111,7 @@ export function useFirebaseDocs() {
     const firebase = useFirebaseStore()
 
     loading.value = true
+    error.value = false
 
     const auth = firebase.firebaseAuth
     try {
@@ -121,6 +127,7 @@ export function useFirebaseDocs() {
     const firebase = useFirebaseStore()
 
     loading.value = true
+    error.value = false
 
     const auth = firebase.firebaseAuth
 

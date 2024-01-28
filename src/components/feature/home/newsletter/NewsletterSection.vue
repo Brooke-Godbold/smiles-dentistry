@@ -1,4 +1,7 @@
 <template>
+  <ToastNotification ref="toast" :type="toastType">
+    <p>{{ toastMessage }}</p>
+  </ToastNotification>
   <section :class="$style.newsletterSection">
     <BaseItem>
       <div :class="$style.newsletterSignup">
@@ -15,8 +18,8 @@
         </p>
         <h3>Get the best advice for free!</h3>
         <h2>Sign up with your Email below</h2>
-        <BaseInput v-model="email" />
-        <BaseButton>Sign Up Now!</BaseButton>
+        <BaseInput :loading="loading" v-model="email" />
+        <BaseButton :loading="loading" @action="signup">Sign Up Now!</BaseButton>
       </div>
     </BaseItem>
   </section>
@@ -26,9 +29,35 @@
 import BaseItem from '@/components/ui/base-item/BaseItem.vue'
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import { ref } from 'vue'
+import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
+import { ref, watch } from 'vue'
+import { useBrevo } from '@/hooks/useBrevo'
 
 const email = ref('')
+const toast = ref(null)
+const toastMessage = ref('')
+const toastType = ref('')
+
+const { loading, error, errorMessage, addEmailContact } = useBrevo()
+
+const signup = () => {
+  addEmailContact(email.value)
+}
+
+watch(loading, (isLoading) => {
+  if (isLoading) return
+
+  if (error.value) {
+    toastMessage.value = errorMessage
+    toastType.value = 'error'
+  } else {
+    toastMessage.value = 'Successfully signed up!'
+    toastType.value = 'success'
+    email.value = ''
+  }
+
+  toast.value.openToast()
+})
 </script>
 
 <style src="./NewsletterSection.styles.css" module />
