@@ -32,7 +32,6 @@
 import { ref, watch } from 'vue'
 
 import { useFirebaseStore } from '@/store/firebase'
-import { collection, getDocs, query, where } from 'firebase/firestore'
 
 import HeaderNav from '../header-nav/HeaderNav.vue'
 import BaseButton from '../base-button/BaseButton.vue'
@@ -40,6 +39,7 @@ import LoginModal from '../../feature/authentication/login-modal/LoginModal.vue'
 import staffId from '../../../utils/staffId'
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'vue-router'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -66,33 +66,29 @@ watch(
   }
 )
 
-async function getServices() {
-  const docs = await getDocs(collection(firebase.firebaseDatabase, 'service'))
-  docs.forEach((doc) =>
+const { loadMultipleDocs, data } = useFirebaseDocs()
+
+async function populateHeader() {
+  await loadMultipleDocs('service')
+  data.value.forEach((doc) =>
     services.value.push({
       navRoute: 'Service',
-      name: doc.data().title,
+      name: doc.title,
       params: { serviceId: doc.id }
     })
   )
-}
 
-async function getStaff() {
-  const staffRef = collection(firebase.db, 'profile')
-  const staffQuery = query(staffRef, where('role', '==', 'staff'))
-  const staffDocs = await getDocs(staffQuery)
-  staffDocs.forEach((staffMember) =>
+  await loadMultipleDocs('profile', [{ field: 'role', operator: '==', value: 'staff' }])
+  data.value.forEach((staffMember) =>
     staff.value.push({
       navRoute: 'Staff',
-      name: `${staffMember.data().firstName} ${staffMember.data().lastName}`,
-      params: { staffId: staffId(staffMember.data().firstName, staffMember.data().lastName) }
+      name: `${staffMember.firstName} ${staffMember.lastName}`,
+      params: { staffId: staffId(staffMember.firstName, staffMember.lastName) }
     })
   )
 }
 
-getServices()
-
-getStaff()
+populateHeader()
 
 async function logout() {
   const auth = firebase.firebaseAuth

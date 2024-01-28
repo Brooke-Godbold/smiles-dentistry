@@ -19,43 +19,33 @@
 </template>
 
 <script setup>
-import { useFirebaseStore } from '@/store/firebase'
-import BaseItem from '../../ui/base-item/BaseItem.vue'
-import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
-import { useRoute } from 'vue-router'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { ref } from 'vue'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import getStaffId from '@/utils/staffId'
 
-const firebase = useFirebaseStore()
+import BaseItem from '../../ui/base-item/BaseItem.vue'
+import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
 
+const router = useRouter()
 const route = useRoute()
 
-const loading = ref(false)
 const staffData = ref(null)
 
-async function getStaffData(staffId) {
-  loading.value = true
+const { loading, data, loadMultipleDocs } = useFirebaseDocs()
+loadMultipleDocs('profile', [{ field: 'role', operator: '==', value: 'staff' }])
 
-  try {
-    const staffRef = collection(firebase.db, 'profile')
-    const staffQuery = query(staffRef, where('role', '==', 'staff'))
-    const staffDocs = await getDocs(staffQuery)
-    const staffDoc = staffDocs?.docs.find(
-      (doc) => staffId === getStaffId(doc.data().firstName, doc.data().lastName)
+watch(data, (newData) => {
+  if (!loading.value && !newData) {
+    router.push({ name: 'NotFound' })
+  } else {
+    const staffDoc = newData.find(
+      (doc) => route.params.staffId === getStaffId(doc.firstName, doc.lastName)
     )
 
-    staffData.value = staffDoc.data()
-  } catch (error) {
-    console.log(error)
-  } finally {
-    loading.value = false
+    staffData.value = staffDoc
   }
-
-  console.log(staffData.value)
-}
-
-getStaffData(route.params.staffId)
+})
 </script>
 
 <style src="./StaffItem.styles.css" module />

@@ -2,22 +2,25 @@
   <div :class="$style.userManagement">
     <h2>User Management</h2>
     <LoadingSpinner v-if="loading" />
-    <div v-else v-for="user in users" :key="user" :class="$style.usersList">
-      <UserDetails :roles="roles" :user="user" @set-loading="setLoading" :loading="usersUpdating" />
+    <div v-else :class="$style.usersList">
+      <UserDetails
+        v-for="user in users"
+        :key="user"
+        :roles="roles"
+        :user="user"
+        @set-loading="setLoading"
+        :usersUpdating="usersUpdating"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import UserDetails from '../user-details/UserDetails.vue'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
-import { useFirebaseStore } from '@/store/firebase'
-import { collection, getDocs } from 'firebase/firestore'
 import { ref } from 'vue'
 
-const firebase = useFirebaseStore()
-
-const loading = ref(false)
 const usersUpdating = ref(false)
 
 const users = ref([])
@@ -28,12 +31,13 @@ const roles = ref([
   { name: 'Admin', value: 'admin' }
 ])
 
-async function getUsers() {
-  loading.value = true
-  const docs = await getDocs(collection(firebase.firebaseDatabase, 'profile'))
-  docs.forEach((doc) => users.value.push({ email: doc.data().email, role: doc.data().role }))
+const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
 
-  loading.value = false
+async function getUsers() {
+  await loadMultipleDocs('profile')
+
+  if (error.value) return
+  data.value.forEach((doc) => users.value.push({ email: doc.email, role: doc.role }))
 }
 
 const setLoading = (isLoading) => (usersUpdating.value = isLoading)

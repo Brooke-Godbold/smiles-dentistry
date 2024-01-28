@@ -4,52 +4,56 @@
   </ToastNotification>
   <div :class="$style.userDetails">
     <p :class="$style.userEmail">{{ user.email }}</p>
-    <BaseSelect :options="roles" v-model="userRole" />
-    <BaseButtonVue :loading="loading" @action="updateUser">
+    <BaseSelect :loading="usersUpdating" :options="roles" v-model="userRole" />
+    <BaseButtonVue :loading="usersUpdating" @action="updateUser">
       <p>Save</p>
     </BaseButtonVue>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import BaseSelect from '@/components/ui/base-select/BaseSelect.vue'
 import BaseButtonVue from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
-import { doc, setDoc } from 'firebase/firestore'
-import { useFirebaseStore } from '@/store/firebase'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const props = defineProps({
   roles: Array,
   user: Object,
-  loading: Boolean
+  usersUpdating: Boolean
 })
 
 const emit = defineEmits(['setLoading'])
-
-const firebase = useFirebaseStore()
 
 const toast = ref(null)
 const toastMessage = ref('')
 const toastType = ref('')
 const userRole = ref(props.user.role)
 
-const updateUser = async () => {
-  emit('setLoading', true)
+const { loading, error, addDoc } = useFirebaseDocs()
 
-  try {
-    const userRef = doc(firebase.db, 'profile', props.user.email)
-    await setDoc(userRef, { role: userRole.value }, { merge: true })
-    toastMessage.value = `Successfully updated User ${props.user.email}`
-    toastType.value = 'success'
-  } catch (error) {
+const updateUser = async () => {
+  emit('setLoading', loading.value)
+
+  await addDoc('profile', props.user.email, { role: userRole.value })
+
+  emit('setLoading', loading.value)
+}
+
+watch(loading, (isLoading) => {
+  if (isLoading) return
+
+  if (error.value) {
     toastMessage.value = 'Something went wrong updating user'
     toastType.value = 'error'
-  } finally {
-    emit('setLoading', false)
-    toast.value.openToast()
+  } else {
+    toastMessage.value = `Successfully updated User ${props.user.email}`
+    toastType.value = 'success'
   }
-}
+
+  toast.value.openToast()
+})
 </script>
 
 <style src="./UserDetails.styles.css" module />

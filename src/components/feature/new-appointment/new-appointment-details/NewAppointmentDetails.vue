@@ -33,7 +33,7 @@
           </div>
         </div>
       </transition>
-      <transition name="select">
+      <transition name="select" mode="out-in">
         <div
           v-if="selectedDate && selectedTime && clinicians.length > 0"
           :class="$style.newAppointmentFormRow"
@@ -62,22 +62,18 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import BaseSelect from '../../../ui/base-select/BaseSelect.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { dateToString, dateToTimestamp, timeDictionary } from '../../../../utils/time.js'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
-import { useFirebaseStore } from '@/store/firebase'
-import { collection, getDocs, query, where } from 'firebase/firestore'
 import staffId from '@/utils/staffId'
-
-const firebase = useFirebaseStore()
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const emit = defineEmits(['next'])
 
 const toast = ref(null)
-const loading = ref(false)
 
 const services = ref([
   { name: 'Check Up', value: 'checkup' },
@@ -128,72 +124,60 @@ const updateAppointmentDetails = () => {
   emit('next', 'patient', true)
 }
 
+const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
+
 const getStaffForService = async () => {
   if (service.value === '') return
 
-  loading.value = true
+  await loadMultipleDocs('profile', [
+    { field: 'role', operator: '==', value: 'staff' },
+    { field: 'services', operator: 'array-contains', value: service.value }
+  ])
 
-  try {
+  if (!error.value) {
     clinicians.value = []
-
-    const staffRef = collection(firebase.firebaseDatabase, 'profile')
-    const staffQuery = query(
-      staffRef,
-      where('role', '==', 'staff'),
-      where('services', 'array-contains', service.value)
-    )
-    const staffDocs = await getDocs(staffQuery)
-    staffDocs.forEach((staffMember) =>
+    data.value.forEach((staffMember) =>
       clinicians.value.push({
-        name: `${staffMember.data().firstName} ${staffMember.data().lastName}`,
-        value: staffId(staffMember.data().firstName, staffMember.data().lastName)
+        name: `${staffMember.firstName} ${staffMember.lastName}`,
+        value: staffId(staffMember.firstName, staffMember.lastName)
       })
     )
-  } catch (error) {
-    toast.value.openToast()
-  } finally {
-    loading.value = false
   }
 }
 
 const getStaffForDate = async () => {
   if (!selectedDate.value || !selectedTime.value) return
 
-  loading.value = true
+  await getStaffForService()
 
-  try {
-    await getStaffForService()
+  if (error.value) return
 
-    const availableClinicians = []
+  const availableClinicians = []
 
-    await Promise.all(
-      clinicians.value.map(async (staff) => {
-        const appointmentRef = collection(firebase.firebaseDatabase, 'appointment')
-        const appointmentQuery = query(
-          appointmentRef,
-          where('staff', '==', staff.value),
-          where('date', '==', selectedDate.value),
-          where('time', '==', selectedTime.value)
-        )
-        const existingAppointment = await getDocs(appointmentQuery)
+  await Promise.all(
+    clinicians.value.map(async (staff) => {
+      await loadMultipleDocs('appointment', [
+        { field: 'staff', operator: '==', value: staff.value },
+        { field: 'date', operator: '==', value: selectedDate.value },
+        { field: 'time', operator: '==', value: selectedTime.value }
+      ])
 
-        if (!existingAppointment.size) {
-          availableClinicians.push({ name: staff.name, value: staff.value })
-        }
-      })
-    )
+      if (data.value.length === 0) {
+        availableClinicians.push({ name: staff.name, value: staff.value })
+      }
+    })
+  )
 
-    clinicians.value = availableClinicians
+  clinicians.value = availableClinicians
 
-    if (clinicians.value.length === 0) {
-      selectedClinician.value = ''
-    }
-  } catch (error) {
-    toast.value.openToast()
-  } finally {
-    loading.value = false
+  if (clinicians.value.length === 0) {
+    selectedClinician.value = ''
   }
 }
+
+watch(error, (isError) => {
+  if (isError) toast.value.openToast()
+})
 
 getStaffForService()
 getStaffForDate()

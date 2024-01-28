@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { initializeApp } from 'firebase/app'
-import { doc, getDoc, getFirestore } from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 export const useFirebaseStore = defineStore('firebaseStore', {
   state: () => {
@@ -37,6 +38,8 @@ export const useFirebaseStore = defineStore('firebaseStore', {
         measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
       }
 
+      const { refreshUserProfile } = useFirebaseDocs()
+
       const app = initializeApp(firebaseConfig)
 
       this.db = getFirestore(app)
@@ -49,7 +52,7 @@ export const useFirebaseStore = defineStore('firebaseStore', {
         if (user) {
           this.isAuthenticated = true
           this.user = user
-          this.refreshUserProfile()
+          refreshUserProfile()
         } else {
           this.isAuthenticated = false
           this.user = null
@@ -57,22 +60,18 @@ export const useFirebaseStore = defineStore('firebaseStore', {
         }
       })
     },
-    async refreshUserProfile() {
-      const docRef = doc(this.db, 'profile', this.userEmail)
-      if (!docRef) return
-
-      const docSnap = await getDoc(docRef)
-      const data = docSnap?.data()
-
+    updateUserProfile(data) {
       this.profile = data
     },
     getCurrentUser() {
+      const { refreshUserProfile } = useFirebaseDocs()
+
       return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(
           this.auth,
           async (user) => {
             if (user) {
-              await this.refreshUserProfile()
+              await refreshUserProfile()
             }
             unsubscribe()
             resolve(user)

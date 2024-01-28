@@ -16,47 +16,32 @@
 import LoadingSpinner from '../../ui/spinner/LoadingSpinner.vue'
 import BaseItem from '../../ui/base-item/BaseItem.vue'
 
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
-import { useFirebaseStore } from '@/store/firebase'
-import { doc, getDoc } from 'firebase/firestore'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
-const firebase = useFirebaseStore()
+const props = defineProps({
+  serviceId: String
+})
 
-const route = useRoute()
 const router = useRouter()
 
-const loading = ref(false)
 const title = ref('')
 const content = ref([])
 const src = ref('')
 
-async function getServiceData(serviceId) {
-  loading.value = true
+const { loading, data, loadSingleDoc } = useFirebaseDocs()
+loadSingleDoc('service', props.serviceId)
 
-  const docRef = doc(firebase.firebaseDatabase, 'service', serviceId)
-  const docSnap = await getDoc(docRef)
-  const data = docSnap?.data()
-
-  if (!data) {
+watch(data, (newData) => {
+  if (!loading.value && !newData) {
     router.push({ name: 'NotFound' })
   } else {
-    content.value = data?.description
-    title.value = data?.title
-    src.value = data?.image
-
-    loading.value = false
+    content.value = newData.description
+    title.value = newData.title
+    src.value = newData.image
   }
-}
-
-getServiceData(route.params.serviceId)
-
-watch(
-  () => route.params.serviceId,
-  (serviceId) => {
-    getServiceData(serviceId)
-  }
-)
+})
 </script>
 
 <style src="./ServiceItem.styles.css" module />

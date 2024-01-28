@@ -1,6 +1,6 @@
 <template>
   <ToastNotification ref="toast" type="error">
-    <p>{{ errorMessage }}</p>
+    <p>Something went wrong signing in!</p>
   </ToastNotification>
   <BaseButton button-text="Login" :loading="firebase.initializing" @action="open">
     <p>Login</p>
@@ -22,10 +22,10 @@
           <BaseButton :loading="loading" @action="close">
             <p>Close</p>
           </BaseButton>
-          <BaseButton :loading="loading" @action="signup">
+          <BaseButton :loading="loading" @action="signupUser">
             <p>Sign Up</p>
           </BaseButton>
-          <BaseButton :loading="loading" @action="login">
+          <BaseButton :loading="loading" @action="loginUser">
             <p>Login</p>
           </BaseButton>
         </div>
@@ -35,13 +35,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import BaseButton from '../../../ui/base-button/BaseButton.vue'
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -49,8 +48,6 @@ const firebase = useFirebaseStore()
 const username = ref('')
 //password
 const password = ref('')
-const errorMessage = ref('')
-const loading = ref(false)
 
 const toast = ref(null)
 
@@ -64,39 +61,28 @@ const close = () => {
   isOpen.value = false
 }
 
-async function signup() {
-  loading.value = true
+const { loading, error, login, signup, addDoc } = useFirebaseDocs()
 
-  const auth = firebase.firebaseAuth
-  try {
-    await createUserWithEmailAndPassword(auth, username.value, password.value)
-    await setDoc(doc(firebase.db, 'profile', username.value), {
-      email: username.value,
-      role: 'user',
-      dateCreated: Date.now()
-    })
-  } catch (error) {
-    errorMessage.value = 'Something went wrong signing in!'
-    toast.value.openToast()
-  } finally {
-    loading.value = false
+async function signupUser() {
+  await signup(username.value, password.value)
+
+  if (error.value) return
+
+  const profile = {
+    email: username.value,
+    role: 'user',
+    dateCreated: Date.now()
   }
+  addDoc('profile', username.value, profile)
 }
 
-async function login() {
-  loading.value = true
-
-  const auth = firebase.firebaseAuth
-  signInWithEmailAndPassword(auth, username.value, password.value)
-    .then(() => {})
-    .catch(() => {
-      errorMessage.value = 'Please check your email and password!'
-      toast.value.openToast()
-    })
-    .finally(() => {
-      loading.value = false
-    })
+async function loginUser() {
+  login(username.value, password.value)
 }
+
+watch(error, (isError) => {
+  if (isError) toast.value.openToast()
+})
 </script>
 
 <style src="./LoginModal.styles.css" module />

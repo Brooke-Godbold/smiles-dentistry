@@ -85,9 +85,8 @@ import BaseTextarea from '@/components/ui/base-textarea/BaseTextarea.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
-import { ref } from 'vue'
-import { doc, setDoc } from 'firebase/firestore'
-import { ref as firebaseRef, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { ref, watch } from 'vue'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -105,46 +104,23 @@ const biographyError = ref(false)
 
 const services = ref(firebase.userProfile?.services || [])
 
-const loading = ref(false)
-
 const toast = ref(null)
 const toastMessage = ref('')
 const toastType = ref('')
+
+const { loading, error, addDoc, uploadToStorageBucket, storageDownloadUrl, refreshUserProfile } =
+  useFirebaseDocs()
 
 const onFileChange = async (e) => {
   const file = e.target.files[0]
 
   if (!file) return
 
-  loading.value = true
+  await uploadToStorageBucket(file, `${firebase.userProfile.dateCreated}_profileImage.jpg`)
 
-  try {
-    const storageRef = firebaseRef(
-      firebase.storage,
-      `${firebase.userProfile.dateCreated}_profileImage.jpg`
-    )
-
-    const snapshot = await uploadBytes(storageRef, file)
-    const downloadUrl = await getDownloadURL(snapshot.ref)
-
-    const userRef = doc(firebase.db, 'profile', firebase.userEmail)
-    await setDoc(userRef, { profileImage: downloadUrl }, { merge: true })
-
-    toastMessage.value = 'Successfully updated Profile Image!'
-    toastType.value = 'success'
-  } catch (error) {
-    toastMessage.value = 'Unable to upload Profile Image at this time'
-    toastType.value = 'error'
-  } finally {
-    toast.value.openToast()
-    loading.value = false
+  if (!error.value) {
+    await addDoc('profile', firebase.userEmail, { profileImage: storageDownloadUrl.value })
   }
-}
-
-const refreshProfile = async () => {
-  loading.value = true
-  await firebase.refreshUserProfile()
-  loading.value = false
 }
 
 const updateProfile = async () => {
@@ -152,31 +128,30 @@ const updateProfile = async () => {
 
   loading.value = true
 
-  try {
-    const userRef = doc(firebase.db, 'profile', firebase.userEmail)
-    await setDoc(
-      userRef,
-      {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        bio: biography.value,
-        services: services.value,
-        qualification: qualification.value
-      },
-      { merge: true }
-    )
-    await refreshProfile()
+  const updatedProfile = {
+    firstName: firstName.value,
+    lastName: lastName.value,
+    bio: biography.value,
+    services: services.value,
+    qualification: qualification.value
+  }
 
+  await addDoc('profile', firebase.userEmail, updatedProfile)
+}
+
+watch(loading, (isLoading) => {
+  if (isLoading) return
+
+  if (!error.value) {
     toastMessage.value = 'Successfully updated Profile!'
     toastType.value = 'success'
-  } catch (error) {
+  } else {
     toastMessage.value = 'Unable to update Profile at this time'
     toastType.value = 'error'
-  } finally {
-    toast.value.openToast()
-    loading.value = false
   }
-}
+
+  toast.value.openToast()
+})
 
 const validate = () => {
   let isError = false
@@ -193,16 +168,18 @@ const validate = () => {
     isError = true
   }
 
-  qualificationError.value = false
-  if (qualification.value === '' || !qualification.value) {
-    qualificationError.value = true
-    isError = true
-  }
+  if (firebase.userProfile.role === 'staff') {
+    qualificationError.value = false
+    if (qualification.value === '' || !qualification.value) {
+      qualificationError.value = true
+      isError = true
+    }
 
-  biographyError.value = false
-  if (!biography.value || biography.value?.length < 50) {
-    biographyError.value = true
-    isError = true
+    biographyError.value = false
+    if (!biography.value || biography.value?.length < 50) {
+      biographyError.value = true
+      isError = true
+    }
   }
 
   if (isError) {
@@ -215,7 +192,7 @@ const validate = () => {
   return true
 }
 
-refreshProfile()
+refreshUserProfile()
 </script>
 
 <style src="./ProfileDetails.styles.css" module />

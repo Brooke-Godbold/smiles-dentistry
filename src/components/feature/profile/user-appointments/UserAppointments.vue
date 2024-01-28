@@ -5,9 +5,9 @@
   <LoadingSpinner v-if="loading" />
   <section v-else :class="$style.userAppointments">
     <h2>My Appointments</h2>
-    <div :class="$style.userAppointmentsList" v-if="existingAppointments.length > 0">
+    <div :class="$style.userAppointmentsList" v-if="data?.length > 0">
       <AppointmentItem
-        v-for="appointment in existingAppointments"
+        v-for="appointment in data"
         :key="appointment.id"
         :appointment="appointment"
       />
@@ -17,35 +17,26 @@
 </template>
 
 <script setup>
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import AppointmentItem from '../../appointment/AppointmentItem.vue'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import { useFirebaseStore } from '@/store/firebase'
+import { ref, watch } from 'vue'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
-import { ref } from 'vue'
+import AppointmentItem from '../../appointment/AppointmentItem.vue'
 
 const firebase = useFirebaseStore()
 
 const toast = ref(null)
-const loading = ref(false)
 
-const existingAppointments = ref([])
+const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
 
-const loadExistingAppointments = async () => {
-  loading.value = true
-
-  try {
-    const appointmentRef = collection(firebase.firebaseDatabase, 'appointment')
-    const appointmentQuery = query(appointmentRef, where('email', '==', firebase.userEmail))
-    const appointmentDocs = await getDocs(appointmentQuery)
-
-    appointmentDocs.docs.forEach((doc) => existingAppointments.value.push(doc.data()))
-  } catch (error) {
-    toast.value.openToast()
-  } finally {
-    loading.value = false
-  }
+const loadExistingAppointments = () => {
+  loadMultipleDocs('appointment', [{ field: 'email', operator: '==', value: firebase.userEmail }])
 }
+
+watch(error, (isError) => {
+  if (isError) toast.value.openToast()
+})
 
 loadExistingAppointments()
 </script>

@@ -5,9 +5,9 @@
   <LoadingSpinner v-if="loading" />
   <section v-else :class="$style.staffAppointments">
     <h2>Upcoming Appointments</h2>
-    <div :class="$style.staffAppointmentsList" v-if="existingAppointments.length > 0">
+    <div :class="$style.staffAppointmentsList" v-if="data?.length > 0">
       <AppointmentItem
-        v-for="appointment in existingAppointments"
+        v-for="appointment in data"
         :key="appointment.id"
         :appointment="appointment"
       />
@@ -17,40 +17,34 @@
 </template>
 
 <script setup>
-import { collection, getDocs, query, where } from 'firebase/firestore'
 import AppointmentItem from '../../appointment/AppointmentItem.vue'
 import { useFirebaseStore } from '@/store/firebase'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import staffId from '@/utils/staffId'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
 const toast = ref(null)
-const loading = ref(false)
 
-const existingAppointments = ref([])
+const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
 
-const loadExistingAppointments = async () => {
-  loading.value = true
-
-  try {
-    const appointmentRef = collection(firebase.firebaseDatabase, 'appointment')
-    const appointmentQuery = query(
-      appointmentRef,
-      where('staff', '==', staffId(firebase.userProfile.firstName, firebase.userProfile.lastName)),
-      where('date', '>=', Date.now())
-    )
-    const appointmentDocs = await getDocs(appointmentQuery)
-
-    appointmentDocs.docs.forEach((doc) => existingAppointments.value.push(doc.data()))
-  } catch (error) {
-    toast.value.openToast()
-  } finally {
-    loading.value = false
-  }
+const loadExistingAppointments = () => {
+  loadMultipleDocs('appointment', [
+    {
+      field: 'staff',
+      operator: '==',
+      value: staffId(firebase.userProfile.firstName, firebase.userProfile.lastName)
+    },
+    { field: 'date', operator: '>=', value: Date.now() }
+  ])
 }
+
+watch(error, (isError) => {
+  if (isError) toast.value.openToast()
+})
 
 loadExistingAppointments()
 </script>

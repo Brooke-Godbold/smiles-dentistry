@@ -30,44 +30,43 @@
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import AppointmentSummary from '@/components/ui/appointment-summary/AppointmentSummary.vue'
-import { useFirebaseStore } from '@/store/firebase'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
-import { doc, setDoc } from 'firebase/firestore'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const emit = defineEmits(['previous'])
 
-const firebase = useFirebaseStore()
 const newAppointmentStore = useNewAppointmentStore()
 
 const router = useRouter()
 
 const toast = ref(null)
-const loading = ref(false)
 
 const previousStep = () => {
   emit('previous', 'patient', false)
 }
 
-const confirm = async () => {
-  loading.value = true
+const { loading, error, addDoc } = useFirebaseDocs()
 
-  try {
-    const appointmentRef = doc(firebase.db, 'appointment', Date.now().toString())
-    await setDoc(appointmentRef, {
-      paid: true,
-      ...newAppointmentStore.newAppointmentDetails,
-      ...newAppointmentStore.newAppointmentPatient
-    })
-    loading.value = false
+const confirm = async () => {
+  const newAppointment = {
+    paid: true,
+    ...newAppointmentStore.newAppointmentDetails,
+    ...newAppointmentStore.newAppointmentPatient
+  }
+
+  await addDoc('appointment', Date.now().toString(), newAppointment)
+
+  if (!error.value) {
     router.push({ name: 'UserAppointments' })
     newAppointmentStore.resetAppointmentCache()
-  } catch (error) {
-    loading.value = false
-    toast.value.openToast()
   }
 }
+
+watch(error, (isError) => {
+  if (isError) toast.value.openToast()
+})
 </script>
 
 <style src="../NewAppointment.styles.css" module />

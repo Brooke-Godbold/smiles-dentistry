@@ -1,5 +1,9 @@
 <template>
-  <router-link v-if="link" :to="{ name: link }" :class="$style.baseButton">
+  <router-link
+    v-if="link"
+    :to="{ name: link }"
+    :class="`${$style.baseButton} ${alt ? $style.alt : ''}`"
+  >
     <slot></slot>
   </router-link>
   <button
@@ -21,7 +25,8 @@ defineProps({
   link: String,
   action: Function,
   loading: Boolean,
-  type: String
+  type: String,
+  alt: Boolean
 })
 </script>
 
