@@ -2,26 +2,27 @@
   <section :class="$style.newAppointmentContainer">
     <div :class="$style.newAppointmentForm">
       <h2 :class="$style.newAppointmentTitle">Patient Details</h2>
-      <div :class="$style.newAppointmentFormRow">
+      <div :class="$style.newAppointmentFormRow" cy-data="appointment-patient-firstname">
         <label>First Name</label>
         <BaseInput v-model="firstName" />
       </div>
-      <div :class="$style.newAppointmentFormRow">
+      <div :class="$style.newAppointmentFormRow" cy-data="appointment-patient-lastname">
         <label>Last Name</label>
         <BaseInput v-model="lastName" />
       </div>
-      <div :class="$style.newAppointmentFormRow">
+      <div :class="$style.newAppointmentFormRow" cy-data="appointment-patient-phone">
         <label>Contact Number</label>
         <BaseInput v-model="phone" />
       </div>
       <div :class="$style.newAppointmentButtonsContainer">
-        <BaseButton @action="previousStep">
+        <BaseButton @action="previousStep" cy-data="previous-button">
           <p>Previous</p>
         </BaseButton>
         <transition>
           <BaseButton
             v-if="firstName !== '' && lastName !== '' && phone !== ''"
             @action="updatePatientDetails"
+            cy-data="next-button"
           >
             <p>Next</p>
           </BaseButton>

@@ -5,7 +5,7 @@
   <section :class="$style.newsletterSection">
     <BaseItem>
       <div :class="$style.newsletterSignup">
-        <h2>Want the best Dental Advice?</h2>
+        <h2 cy-data="newsletter-heading-primary">Want the best Dental Advice?</h2>
         <p>
           Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
           Sed aliquam vitae nisi ut faucibus. Praesent tempor ut arcu sed ullamcorper. Nulla
@@ -16,10 +16,12 @@
           tincidunt ut. Curabitur eget condimentum elit, sit amet venenatis erat. Mauris tellus
           risus, viverra porttitor ex lacinia, volutpat malesuada ipsum.
         </p>
-        <h3>Get the best advice for free!</h3>
-        <h2>Sign up with your Email below</h2>
-        <BaseInput :loading="loading" v-model="email" />
-        <BaseButton :loading="loading" @action="signup">Sign Up Now!</BaseButton>
+        <h3 cy-data="newsletter-heading-secondary">Get the best advice for free!</h3>
+        <h2 cy-data="newsletter-heading-tertiary">Sign up with your Email below</h2>
+        <BaseInput cy-data="newsletter-email" :loading="loading" v-model="email" />
+        <BaseButton cy-data="newsletter-signup-button" :loading="loading" @action="signup"
+          >Sign Up Now!</BaseButton
+        >
       </div>
     </BaseItem>
   </section>
@@ -31,14 +33,14 @@ import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { ref, watch } from 'vue'
-import { useBrevo } from '@/hooks/useBrevo'
+import { UseBrevo } from '@/hooks/useBrevo'
 
 const email = ref('')
 const toast = ref(null)
 const toastMessage = ref('')
 const toastType = ref('')
 
-const { loading, error, errorMessage, addEmailContact } = useBrevo()
+const { loading, error, errorMessage, addEmailContact } = UseBrevo.useBrevo()
 
 const signup = () => {
   addEmailContact(email.value)

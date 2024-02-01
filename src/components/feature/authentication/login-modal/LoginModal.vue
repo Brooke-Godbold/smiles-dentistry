@@ -2,30 +2,35 @@
   <ToastNotification ref="toast" type="error">
     <p>Something went wrong signing in!</p>
   </ToastNotification>
-  <BaseButton button-text="Login" :loading="firebase.initializing" @action="open">
+  <BaseButton
+    button-text="Login"
+    :loading="firebase.initializing"
+    @action="open"
+    data-cy="header-login-button"
+  >
     <p>Login</p>
   </BaseButton>
   <teleport to="body">
     <div v-if="isOpen" :class="$style.overlay" />
     <transition name="modal">
-      <div v-if="isOpen" :class="$style.modal">
+      <div v-if="isOpen" :class="$style.modal" cy-data="login-modal">
         <h3 :class="$style.loginTitle">Login</h3>
         <div :class="$style.loginModalRow">
           <label>Username</label>
-          <BaseInput type="email" v-model="username" />
+          <BaseInput data-cy="login-modal-username" type="email" v-model="username" />
         </div>
         <div :class="$style.loginModalRow">
           <label>Password</label>
-          <BaseInput type="password" v-model="password" />
+          <BaseInput data-cy="login-modal-password" type="password" v-model="password" />
         </div>
         <div :class="$style.buttonContainer">
-          <BaseButton :loading="loading" @action="close">
+          <BaseButton data-cy="login-modal-close" :loading="loading" @action="close">
             <p>Close</p>
           </BaseButton>
-          <BaseButton :loading="loading" @action="signupUser">
+          <BaseButton data-cy="login-modal-signup" :loading="loading" @action="signupUser">
             <p>Sign Up</p>
           </BaseButton>
-          <BaseButton :loading="loading" @action="loginUser">
+          <BaseButton data-cy="login-modal-login" :loading="loading" @action="loginUser">
             <p>Login</p>
           </BaseButton>
         </div>
@@ -40,7 +45,7 @@ import BaseButton from '../../../ui/base-button/BaseButton.vue'
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -61,7 +66,7 @@ const close = () => {
   isOpen.value = false
 }
 
-const { loading, error, login, signup, addDoc } = useFirebaseDocs()
+const { loading, error, login, signup, addDoc } = UseFirebaseDocs.useFirebaseDocs()
 
 async function signupUser() {
   await signup(username.value, password.value)

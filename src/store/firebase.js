@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getStorage } from 'firebase/storage'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 export const useFirebaseStore = defineStore('firebaseStore', {
   state: () => {
@@ -38,7 +38,7 @@ export const useFirebaseStore = defineStore('firebaseStore', {
         measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
       }
 
-      const { refreshUserProfile } = useFirebaseDocs()
+      const { refreshUserProfile } = UseFirebaseDocs.useFirebaseDocs()
 
       const app = initializeApp(firebaseConfig)
 
@@ -64,7 +64,7 @@ export const useFirebaseStore = defineStore('firebaseStore', {
       this.profile = data
     },
     getCurrentUser() {
-      const { refreshUserProfile } = useFirebaseDocs()
+      const { refreshUserProfile } = UseFirebaseDocs.useFirebaseDocs()
 
       return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(

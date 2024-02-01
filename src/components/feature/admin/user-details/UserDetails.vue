@@ -3,9 +3,9 @@
     <p>{{ toastMessage }}</p>
   </ToastNotification>
   <div :class="$style.userDetails">
-    <p :class="$style.userEmail">{{ user.email }}</p>
-    <BaseSelect :loading="usersUpdating" :options="roles" v-model="userRole" />
-    <BaseButtonVue :loading="usersUpdating" @action="updateUser">
+    <p :class="$style.userEmail" cy-data="user-email">{{ user.email }}</p>
+    <BaseSelect :loading="usersUpdating" :options="roles" v-model="userRole" cy-data="user-role" />
+    <BaseButtonVue :loading="usersUpdating" @action="updateUser" cy-data="update-button">
       <p>Save</p>
     </BaseButtonVue>
   </div>
@@ -16,7 +16,7 @@ import { ref, watch } from 'vue'
 import BaseSelect from '@/components/ui/base-select/BaseSelect.vue'
 import BaseButtonVue from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const props = defineProps({
   roles: Array,
@@ -31,7 +31,7 @@ const toastMessage = ref('')
 const toastType = ref('')
 const userRole = ref(props.user.role)
 
-const { loading, error, addDoc } = useFirebaseDocs()
+const { loading, error, addDoc } = UseFirebaseDocs.useFirebaseDocs()
 
 const updateUser = async () => {
   emit('setLoading', loading.value)

@@ -1,11 +1,12 @@
 <template>
-  <div :class="$style.selectContainer">
-    <LoadingSpinner v-if="loading" :mini="true" />
+  <div :class="$style.selectContainer" data-cy="base-select-container">
+    <LoadingSpinner v-if="loading" :mini="true" data-cy="base-select-loading-spinner" />
     <select
       :class="$style.select"
       :disabled="loading"
       v-model="selectModel"
       v-on:change="$emit('onSelectChanged')"
+      data-cy="base-select"
     >
       <option disabled value="">Please select...</option>
       <option v-for="option in options" :key="option.value" :value="option.value">

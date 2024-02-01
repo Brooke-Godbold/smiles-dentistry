@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 *.env
+
+/src/**/__image_snapshots__

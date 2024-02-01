@@ -1,32 +1,32 @@
 <template>
-  <section :class="$style.appointmentSummary">
+  <section :class="$style.appointmentSummary" data-cy="appointment-summary">
     <div :class="$style.appointmentFormRow">
       <label>Your Service</label>
-      <p :class="$style.appointmentInfoText">
+      <p :class="$style.appointmentInfoText" data-cy="service">
         {{ `${service.charAt(0).toUpperCase()}${service.slice(1)}` }}
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
       <label>Your Date</label>
-      <p :class="$style.appointmentInfoText">
+      <p :class="$style.appointmentInfoText" data-cy="date">
         {{ `${timestampToDateString(date)} at ${timeAsString(time)}` }}
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
       <label>Your Clinician</label>
-      <p :class="$style.appointmentInfoText">
+      <p :class="$style.appointmentInfoText" data-cy="clinician">
         {{ staff }}
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
       <label>Name</label>
-      <p :class="$style.appointmentInfoText">
+      <p :class="$style.appointmentInfoText" data-cy="name">
         {{ `${firstName} ${lastName}` }}
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
       <label>Contact Number</label>
-      <p :class="$style.appointmentInfoText">
+      <p :class="$style.appointmentInfoText" data-cy="phone">
         {{ phone }}
       </p>
     </div>

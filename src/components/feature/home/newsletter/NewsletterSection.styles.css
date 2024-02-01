@@ -12,6 +12,7 @@
   width: 100%;
 
   background-color: var(--color-brand-200);
+  color: var(--color-brand-600);
 
   display: flex;
   flex-direction: column;

@@ -19,6 +19,7 @@
 
 .staffContainer {
   height: 100%;
+  min-height: 30rem;
 
   position: relative;
 }

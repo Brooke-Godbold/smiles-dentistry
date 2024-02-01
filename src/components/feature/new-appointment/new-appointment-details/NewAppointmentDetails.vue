@@ -5,7 +5,7 @@
     </ToastNotification>
     <div :class="$style.newAppointmentForm">
       <h2 :class="$style.newAppointmentTitle">New Appointment Details</h2>
-      <div :class="$style.newAppointmentFormRow">
+      <div :class="$style.newAppointmentFormRow" cy-data="appointment-details-service">
         <label>Your Service</label>
         <BaseSelect
           :loading="loading"
@@ -17,7 +17,7 @@
       <transition name="select">
         <div v-if="service !== ''" :class="$style.newAppointmentFormRow">
           <label>Your Appointment Date & Time</label>
-          <div :class="$style.newAppointmentSelectContainer">
+          <div :class="$style.newAppointmentSelectContainer" cy-data="appointment-details-date">
             <BaseSelect
               :loading="loading"
               :options="dates"
@@ -37,6 +37,7 @@
         <div
           v-if="selectedDate && selectedTime && clinicians.length > 0"
           :class="$style.newAppointmentFormRow"
+          cy-data="appointment-details-clinician"
         >
           <label>Available Clinicians</label>
           <BaseSelect :loading="loading" :options="clinicians" v-model="selectedClinician" />
@@ -44,6 +45,7 @@
         <p
           v-else-if="selectedDate && selectedTime && clinicians.length === 0 && !loading"
           :class="$style.noCliniciansAvailable"
+          cy-data="appointment-details-no-clinician"
         >
           There are no Clinicians available for this service at this date & time
         </p>
@@ -69,7 +71,7 @@ import ToastNotification from '@/components/ui/toast-notification/ToastNotificat
 import { dateToString, dateToTimestamp, timeDictionary } from '../../../../utils/time.js'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
 import staffId from '@/utils/staffId'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const emit = defineEmits(['next'])
 
@@ -124,7 +126,7 @@ const updateAppointmentDetails = () => {
   emit('next', 'patient', true)
 }
 
-const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
+const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
 const getStaffForService = async () => {
   if (service.value === '') return

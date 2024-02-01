@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.spinner" :style="mini ? { width: '3.2rem' } : {}" />
+  <div :class="$style.spinner" :style="mini ? { width: '3.2rem' } : {}" data-cy="loading-spinner" />
 </template>
 
 <script setup>

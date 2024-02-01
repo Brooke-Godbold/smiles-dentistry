@@ -1,9 +1,10 @@
 <template>
   <teleport to="body"
-    ><transition name="toast">
+    ><transition name="toast" data-cy="toast-notification-container">
       <div
         v-if="open"
         :class="`${$style.baseToast} ${type === 'success' ? $style.success : $style.error}`"
+        data-cy="toast-notification"
       >
         <slot></slot>
       </div> </transition

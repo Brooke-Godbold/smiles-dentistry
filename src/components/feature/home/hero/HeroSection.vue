@@ -7,7 +7,7 @@
       />
       <div :class="$style.heroImageGradient" />
       <div :class="$style.heroInformation">
-        <h2>Everyone Deserves An Award Winning Smile!</h2>
+        <h2 cy-data="hero-heading">Everyone Deserves An Award Winning Smile!</h2>
         <p :class="$style.heroText">
           Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
           Sed aliquam vitae nisi ut faucibus. Praesent tempor ut arcu sed ullamcorper. Nulla
@@ -34,12 +34,12 @@
           fermentum tempus condimentum.
         </p>
         <div :class="$style.heroContact">
-          <BaseButton link="Appointment" :alt="true">
+          <BaseButton link="Appointment" :alt="true" cy-data="hero-button">
             <p>Make an Appointment Now</p>
           </BaseButton>
           <h2>OR</h2>
           <p>Call us on:</p>
-          <h1>01784 998 778</h1>
+          <h1 cy-data="hero-phone">01784 998 778</h1>
         </div>
       </div>
     </div>

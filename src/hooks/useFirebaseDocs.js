@@ -4,7 +4,7 @@ import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase
 import { ref as firebaseRef, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { ref } from 'vue'
 
-export function useFirebaseDocs() {
+function useFirebaseDocs() {
   const firebase = useFirebaseStore()
 
   const loading = ref(false)
@@ -154,4 +154,8 @@ export function useFirebaseDocs() {
     login,
     signup
   }
+}
+
+export const UseFirebaseDocs = {
+  useFirebaseDocs
 }

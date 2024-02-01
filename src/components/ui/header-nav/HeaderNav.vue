@@ -1,9 +1,15 @@
 <template>
   <div @mouseenter="setIsActive(true)" @mouseleave="setIsActive(false)">
-    <p :class="`${$style.headerNav} ${isActive ? $style.headerNavActive : ''}`">{{ navTitle }}</p>
+    <p
+      :class="`${$style.headerNav} ${isActive ? $style.headerNavActive : ''}`"
+      data-cy="header-nav-title"
+    >
+      {{ navTitle }}
+    </p>
     <ul
       v-if="navLinks?.length > 0"
       :class="`${$style.headerNavDropdown} ${isActive ? $style.active : $style.inactive}`"
+      data-cy="header-nav-links"
     >
       <router-link
         v-for="navLink in navLinks"

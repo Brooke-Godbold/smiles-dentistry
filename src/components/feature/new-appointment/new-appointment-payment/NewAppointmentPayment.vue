@@ -6,6 +6,7 @@
     <div :class="$style.newAppointmentForm">
       <h2 :class="$style.newAppointmentTitle">Your Appointment</h2>
       <AppointmentSummary
+        cy-data="appointment-payment-summary"
         :service="newAppointmentStore.newAppointmentDetails.service"
         :date="newAppointmentStore.newAppointmentDetails.date"
         :time="newAppointmentStore.newAppointmentDetails.time"
@@ -15,10 +16,10 @@
         :phone="newAppointmentStore.newAppointmentPatient.phone"
       />
       <div :class="$style.newAppointmentButtonsContainer">
-        <BaseButton :loading="loading" @action="previousStep">
+        <BaseButton :loading="loading" @action="previousStep" cy-data="previous-button">
           <p>Previous</p>
         </BaseButton>
-        <BaseButton :loading="loading" @action="confirm">
+        <BaseButton :loading="loading" @action="confirm" cy-data="confirm-button">
           <p>Confirm Appointment</p>
         </BaseButton>
       </div>
@@ -33,7 +34,7 @@ import AppointmentSummary from '@/components/ui/appointment-summary/AppointmentS
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const emit = defineEmits(['previous'])
 
@@ -47,7 +48,7 @@ const previousStep = () => {
   emit('previous', 'patient', false)
 }
 
-const { loading, error, addDoc } = useFirebaseDocs()
+const { loading, error, addDoc } = UseFirebaseDocs.useFirebaseDocs()
 
 const confirm = async () => {
   const newAppointment = {

@@ -5,19 +5,19 @@
   <LoadingSpinner v-if="loading" />
   <section v-else :class="$style.userAppointments">
     <h2>My Appointments</h2>
-    <div :class="$style.userAppointmentsList" v-if="data?.length > 0">
+    <div cy-data="appointments-list" :class="$style.userAppointmentsList" v-if="data?.length > 0">
       <AppointmentItem
         v-for="appointment in data"
         :key="appointment.id"
         :appointment="appointment"
       />
     </div>
-    <h3 v-else>You don't have any Appointments</h3>
+    <h3 v-else cy-data="no-appointments">You don't have any Appointments</h3>
   </section>
 </template>
 
 <script setup>
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import { useFirebaseStore } from '@/store/firebase'
 import { ref, watch } from 'vue'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
@@ -28,7 +28,7 @@ const firebase = useFirebaseStore()
 
 const toast = ref(null)
 
-const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
+const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
 const loadExistingAppointments = () => {
   loadMultipleDocs('appointment', [{ field: 'email', operator: '==', value: firebase.userEmail }])

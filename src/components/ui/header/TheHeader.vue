@@ -1,24 +1,25 @@
 <template>
-  <header :class="$style.header">
-    <router-link :class="$style.headerHome" :to="{ name: 'Home' }">
+  <header :class="$style.header" data-cy="header">
+    <router-link :class="$style.headerHome" :to="{ name: 'Home' }" data-cy="header-logo">
       <v-icon name="ri-star-smile-fill" />
       <p>All Smiles Dentistry</p>
     </router-link>
     <div :class="$style.navLinksContainer">
-      <HeaderNav :nav-links="services" nav-title="Services" />
-      <HeaderNav :nav-links="staff" nav-title="Staff" />
+      <HeaderNav :nav-links="services" nav-title="Services" data-cy="header-services-nav" />
+      <HeaderNav :nav-links="staff" nav-title="Staff" data-cy="header-staff-nav" />
     </div>
     <div v-if="firebase.authenticated" :class="$style.navLinksContainer">
-      <HeaderNav :nav-links="profile" nav-title="Profile" />
+      <HeaderNav :nav-links="profile" nav-title="Profile" data-cy="header-profile-nav-links" />
       <HeaderNav
         v-if="firebase.userProfile?.role === 'admin'"
         :nav-links="admin"
         nav-title="Admin"
+        data-cy="header-admin-nav-links"
       />
-      <BaseButton link="Appointment">
+      <BaseButton link="Appointment" data-cy="header-appointment-button">
         <p>Make an Appointment</p>
       </BaseButton>
-      <BaseButton @action="logout">
+      <BaseButton @action="logout" data-cy="header-logout-button">
         <p>Logout</p>
       </BaseButton>
     </div>
@@ -39,7 +40,7 @@ import LoginModal from '../../feature/authentication/login-modal/LoginModal.vue'
 import staffId from '../../../utils/staffId'
 import { signOut } from 'firebase/auth'
 import { useRouter } from 'vue-router'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -56,17 +57,25 @@ watch(
   (newProfile) => {
     if (!newProfile) return
 
-    profile.value = [
-      { navRoute: 'ProfileDetails', name: 'Profile Details' },
-      { navRoute: 'UserAppointments', name: 'My Appointments' },
-      firebase.userProfile.role === 'staff'
-        ? { navRoute: 'StaffAppointments', name: 'Upcoming Appointments' }
-        : []
-    ]
+    populateUserProfileNav()
   }
 )
 
-const { loadMultipleDocs, data } = useFirebaseDocs()
+const populateUserProfileNav = () => {
+  if (!firebase.userProfile) return
+
+  profile.value = [
+    { navRoute: 'ProfileDetails', name: 'Profile Details' },
+    { navRoute: 'UserAppointments', name: 'My Appointments' },
+    ...(firebase.userProfile.role === 'staff'
+      ? [{ navRoute: 'StaffAppointments', name: 'Upcoming Appointments' }]
+      : [])
+  ]
+}
+
+populateUserProfileNav()
+
+const { loadMultipleDocs, data } = UseFirebaseDocs.useFirebaseDocs()
 
 async function populateHeader() {
   await loadMultipleDocs('service')

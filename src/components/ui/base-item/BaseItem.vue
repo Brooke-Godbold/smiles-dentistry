@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.baseItem">
+  <div :class="$style.baseItem" data-cy="base-item">
     <slot></slot>
   </div>
 </template>

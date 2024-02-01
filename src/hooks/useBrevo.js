@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ref } from 'vue'
 
-export function useBrevo() {
+function useBrevo() {
   const loading = ref(false)
   const error = ref(false)
   const errorMessage = ref('')
@@ -39,4 +39,8 @@ export function useBrevo() {
   }
 
   return { loading, error, addEmailContact }
+}
+
+export const UseBrevo = {
+  useBrevo
 }

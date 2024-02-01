@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.inputContainer">
+  <div :class="$style.inputContainer" data-cy="base-input-container">
     <input
       :class="`${$style.input} ${error ? $style.error : ''}`"
       :type="type || 'text'"
@@ -7,9 +7,10 @@
       :value="value || inputModel"
       v-model="inputModel"
       v-on:change="(e) => $emit('onFileUploaded', e)"
+      data-cy="base-input"
     />
-    <p v-if="error" :class="$style.errorMessage">{{ errorMessage }}</p>
-    <LoadingSpinner v-if="loading" :mini="true" />
+    <p v-if="error" :class="$style.errorMessage" data-cy="base-input-error">{{ errorMessage }}</p>
+    <LoadingSpinner v-if="loading" :mini="true" data-cy="base-input-loading-spinner" />
   </div>
 </template>
 

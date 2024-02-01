@@ -16,9 +16,9 @@
         <div :class="$style.locationInformation">
           <h2>Our Location</h2>
           <div :class="$style.addressSection">
-            <p>123 Smile Street</p>
-            <p>London</p>
-            <p>SE16 7HH</p>
+            <p cy-data="location-street">123 Smile Street</p>
+            <p cy-data="location-city">London</p>
+            <p cy-data="location-postcode">SE16 7HH</p>
           </div>
           <p :class="$style.locationText">
             Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;

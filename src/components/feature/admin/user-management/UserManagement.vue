@@ -2,7 +2,7 @@
   <div :class="$style.userManagement">
     <h2>User Management</h2>
     <LoadingSpinner v-if="loading" />
-    <div v-else :class="$style.usersList">
+    <div v-else :class="$style.usersList" cy-data="user-list">
       <UserDetails
         v-for="user in users"
         :key="user"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import UserDetails from '../user-details/UserDetails.vue'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
 import { ref } from 'vue'
@@ -31,7 +31,7 @@ const roles = ref([
   { name: 'Admin', value: 'admin' }
 ])
 
-const { loading, error, data, loadMultipleDocs } = useFirebaseDocs()
+const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
 async function getUsers() {
   await loadMultipleDocs('profile')

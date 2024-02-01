@@ -4,11 +4,15 @@
   </ToastNotification>
   <form @submit.prevent="updateProfile" :class="$style.profileDetails">
     <h2>Profile Details</h2>
-    <div :class="$style.profileDetailsRow">
+    <div :class="$style.profileDetailsRow" data-cy="profile-details-email">
       <label>User</label>
       <p :class="$style.profileDetailsUser">{{ firebase.userEmail }}</p>
     </div>
-    <div v-if="firebase.userProfile.role !== 'user'" :class="$style.profileDetailsRow">
+    <div
+      v-if="firebase.userProfile.role !== 'user'"
+      :class="$style.profileDetailsRow"
+      data-cy="profile-details-role"
+    >
       <label>My Job Role</label>
       <p :class="$style.profileDetailsUser">
         {{
@@ -16,7 +20,7 @@
         }}
       </p>
     </div>
-    <div :class="$style.profileDetailsRow">
+    <div :class="$style.profileDetailsRow" data-cy="profile-details-firstname">
       <label>First Name</label>
       <BaseInput
         :loading="loading"
@@ -25,7 +29,7 @@
         errorMessage="First Name must be supplied"
       />
     </div>
-    <div :class="$style.profileDetailsRow">
+    <div :class="$style.profileDetailsRow" data-cy="profile-details-lastname">
       <label>Last Name</label>
       <BaseInput
         :loading="loading"
@@ -34,7 +38,11 @@
         errorMessage="Last Name must be supplied"
       />
     </div>
-    <div v-if="firebase.userProfile.role === 'staff'" :class="$style.profileDetailsRow">
+    <div
+      v-if="firebase.userProfile.role === 'staff'"
+      :class="$style.profileDetailsRow"
+      data-cy="profile-details-qualification"
+    >
       <label>Qualification</label>
       <BaseInput
         :loading="loading"
@@ -43,7 +51,11 @@
         errorMessage="Qualification must be supplied"
       />
     </div>
-    <div v-if="firebase.userProfile.role === 'staff'" :class="$style.profileDetailsRow">
+    <div
+      v-if="firebase.userProfile.role === 'staff'"
+      :class="$style.profileDetailsRow"
+      data-cy="profile-details-bio"
+    >
       <label>Biography</label>
       <BaseTextarea
         :loading="loading"
@@ -52,7 +64,11 @@
         errorMessage="Biography must be at least 50 characters"
       />
     </div>
-    <div v-if="firebase.userProfile.role === 'staff'" :class="$style.profileDetailsRow">
+    <div
+      v-if="firebase.userProfile.role === 'staff'"
+      :class="$style.profileDetailsRow"
+      data-cy="profile-details-services"
+    >
       <label>Services Offered</label>
       <div :class="$style.servicesSection">
         <div :class="$style.serviceSelection">
@@ -86,7 +102,7 @@ import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
 import { ref, watch } from 'vue'
-import { useFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
 
@@ -109,7 +125,7 @@ const toastMessage = ref('')
 const toastType = ref('')
 
 const { loading, error, addDoc, uploadToStorageBucket, storageDownloadUrl, refreshUserProfile } =
-  useFirebaseDocs()
+  UseFirebaseDocs.useFirebaseDocs()
 
 const onFileChange = async (e) => {
   const file = e.target.files[0]
@@ -125,8 +141,6 @@ const onFileChange = async (e) => {
 
 const updateProfile = async () => {
   if (!validate()) return
-
-  loading.value = true
 
   const updatedProfile = {
     firstName: firstName.value,
