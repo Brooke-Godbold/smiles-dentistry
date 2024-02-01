@@ -10,11 +10,23 @@ describe('<NewAppointmentDetails />', () => {
     const stubbedResponse = {
       loading: ref(false),
       error: ref(false),
-      data: ref([]),
       loadMultipleDocs: () => {}
     }
 
-    cy.stub(UseFirebaseDocs, 'useFirebaseDocs').returns(stubbedResponse)
+    cy.stub(UseFirebaseDocs, 'useFirebaseDocs')
+      .onFirstCall()
+      .returns({
+        ...stubbedResponse,
+        data: ref([
+          { title: 'Extraction', id: 'extraction', price: '100' },
+          { title: 'Check Up', id: 'checkup', price: '50' }
+        ])
+      })
+      .onSecondCall()
+      .returns({
+        ...stubbedResponse,
+        data: ref([])
+      })
   })
 
   it('renders New Appointment Details with empty data', () => {
@@ -90,7 +102,7 @@ describe('<NewAppointmentDetails />', () => {
       time: null
     }
 
-    cy.get('[cy-data=appointment-details-service]').find('select').select('Extraction')
+    cy.get('[cy-data=appointment-details-service]').find('select').select('extraction')
 
     cy.get('[cy-data=appointment-details-date]').find('select').eq(0).select(1)
     cy.get('[cy-data=appointment-details-date]').find('select').eq(1).select(1)

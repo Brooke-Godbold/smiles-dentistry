@@ -9,6 +9,7 @@
         :first-name="appointment.firstName"
         :last-name="appointment.lastName"
         :phone="appointment.phone"
+        :price="appointment.price"
       />
     </div>
   </BaseItem>

@@ -14,7 +14,11 @@
         :first-name="newAppointmentStore.newAppointmentPatient.firstName"
         :last-name="newAppointmentStore.newAppointmentPatient.lastName"
         :phone="newAppointmentStore.newAppointmentPatient.phone"
+        :price="newAppointmentStore.newAppointmentDetails.price"
       />
+      <p :class="$style.noCliniciansAvailable" cy-data="appointment-payment-notification">
+        Payment will be taken at the clinic on the day of your Appointment
+      </p>
       <div :class="$style.newAppointmentButtonsContainer">
         <BaseButton :loading="loading" @action="previousStep" cy-data="previous-button">
           <p>Previous</p>

@@ -6,6 +6,7 @@
       <div :class="$style.serviceImageGradient" />
       <div :class="$style.serviceInformation" data-cy="service-item-information">
         <h2 data-cy="service-item-title">{{ serviceData.title }}</h2>
+        <h4 data-cy="service-item-price">{{ `From £${serviceData.price}` }}</h4>
         <p v-for="text in serviceData.content" :key="text" :class="$style.serviceText">
           {{ text }}
         </p>
@@ -34,7 +35,8 @@ const serviceData = computed(() => {
   return {
     content: data.value.description,
     title: data.value.title,
-    src: data.value.image
+    src: data.value.image,
+    price: data.value.price
   }
 })
 

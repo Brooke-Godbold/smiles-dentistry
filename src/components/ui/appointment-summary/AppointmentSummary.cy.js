@@ -10,7 +10,8 @@ describe('<AppointmentSummary />', () => {
         staff: 'johnsmith',
         firstName: 'Jack',
         lastName: 'Doe',
-        phone: '01225 966 699'
+        phone: '01225 966 699',
+        price: 50
       }
     })
 
@@ -19,6 +20,7 @@ describe('<AppointmentSummary />', () => {
     cy.get('[data-cy=clinician]').should('have.text', 'johnsmith')
     cy.get('[data-cy=name]').should('have.text', 'Jack Doe')
     cy.get('[data-cy=phone]').should('have.text', '01225 966 699')
+    cy.get('[data-cy=price]').should('have.text', '£50')
 
     cy.get('[data-cy=appointment-summary]').matchImage()
   })

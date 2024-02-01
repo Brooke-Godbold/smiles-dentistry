@@ -77,11 +77,6 @@ const emit = defineEmits(['next'])
 
 const toast = ref(null)
 
-const services = ref([
-  { name: 'Check Up', value: 'checkup' },
-  { name: 'Extraction', value: 'extraction' }
-])
-
 const dates = ref([])
 
 const initializeDates = () => {
@@ -115,18 +110,41 @@ const selectedDate = ref(newAppointmentDetails.date)
 const selectedTime = ref(newAppointmentDetails.time)
 const selectedClinician = ref(newAppointmentDetails.staff)
 
+const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
+
+const services = ref([])
+const priceLookup = []
+
+const loadServices = async () => {
+  await loadMultipleDocs('service')
+
+  if (!error.value) {
+    data.value.forEach((service) => {
+      services.value.push({
+        name: `${service.title} - £${service.price}`,
+        value: service.id
+      })
+      priceLookup.push({
+        service: service.id,
+        price: service.price
+      })
+    })
+  }
+}
+
+loadServices()
+
 const updateAppointmentDetails = () => {
   newAppointmentStore.updateAppointmentDetails(
     service.value,
     selectedDate.value,
     selectedTime.value,
-    selectedClinician.value
+    selectedClinician.value,
+    priceLookup.find((obj) => obj.service === service.value).price
   )
 
   emit('next', 'patient', true)
 }
-
-const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
 const getStaffForService = async () => {
   if (service.value === '') return

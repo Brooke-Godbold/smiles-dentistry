@@ -37,7 +37,8 @@ describe('<NewAppointmentPayment />', () => {
       phone: '01245 669 669',
       service: 'extraction',
       email: 'john@gmail.com',
-      paid: true
+      paid: true,
+      price: 100
     }
 
     cy.wrap(testData).as('testData')
@@ -47,7 +48,8 @@ describe('<NewAppointmentPayment />', () => {
       date: testData.date,
       time: testData.time,
       staff: testData.staff,
-      service: testData.service
+      service: testData.service,
+      price: testData.price
     }
     store.newAppointmentPatient = {
       firstName: testData.firstName,
@@ -59,6 +61,10 @@ describe('<NewAppointmentPayment />', () => {
 
   it('renders New Appointment Payment form', () => {
     cy.get('[cy-data=appointment-payment-summary]').should('exist')
+    cy.get('[cy-data=appointment-payment-notification]').should(
+      'contain.text',
+      'Payment will be taken at the clinic on the day of your Appointment'
+    )
   })
 
   it('submits a new appointment on confirmation', function () {

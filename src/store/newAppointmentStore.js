@@ -7,7 +7,8 @@ export const useNewAppointmentStore = defineStore('newAppointmentStore', {
         service: '',
         date: null,
         time: null,
-        staff: ''
+        staff: '',
+        price: null
       },
       patient: {
         firstName: '',
@@ -22,12 +23,13 @@ export const useNewAppointmentStore = defineStore('newAppointmentStore', {
     newAppointmentPatient: (state) => state.patient
   },
   actions: {
-    updateAppointmentDetails(service, date, time, staff) {
+    updateAppointmentDetails(service, date, time, staff, price) {
       this.details = {
         service,
         date,
         time,
-        staff
+        staff,
+        price
       }
     },
     updateAppointmentPatient(firstName, lastName, email, phone) {
@@ -43,7 +45,8 @@ export const useNewAppointmentStore = defineStore('newAppointmentStore', {
         service: '',
         date: null,
         time: null,
-        staff: ''
+        staff: '',
+        price: null
       }
       this.patient = {
         firstName: '',

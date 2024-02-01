@@ -7,6 +7,12 @@
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
+      <label>Your Price</label>
+      <p :class="$style.appointmentInfoText" data-cy="price">
+        {{ `£${price}` }}
+      </p>
+    </div>
+    <div :class="$style.appointmentFormRow">
       <label>Your Date</label>
       <p :class="$style.appointmentInfoText" data-cy="date">
         {{ `${timestampToDateString(date)} at ${timeAsString(time)}` }}
@@ -19,13 +25,13 @@
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
-      <label>Name</label>
+      <label>Your Name</label>
       <p :class="$style.appointmentInfoText" data-cy="name">
         {{ `${firstName} ${lastName}` }}
       </p>
     </div>
     <div :class="$style.appointmentFormRow">
-      <label>Contact Number</label>
+      <label>Your Contact Number</label>
       <p :class="$style.appointmentInfoText" data-cy="phone">
         {{ phone }}
       </p>
@@ -38,6 +44,7 @@ import { timeAsString, timestampToDateString } from '@/utils/time'
 
 defineProps({
   service: String,
+  price: Number,
   date: Number,
   time: Number,
   staff: String,
