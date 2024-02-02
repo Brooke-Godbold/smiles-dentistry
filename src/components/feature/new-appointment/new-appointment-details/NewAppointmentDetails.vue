@@ -82,19 +82,25 @@ const dates = ref([])
 const initializeDates = () => {
   const firstDay = new Date()
   firstDay.setHours(24, 0, 0, 0)
-  dates.value.push({
-    name: dateToString(firstDay),
-    value: dateToTimestamp(firstDay)
-  })
+
+  if (firstDay.getDay() !== 0) {
+    dates.value.push({
+      name: dateToString(firstDay),
+      value: dateToTimestamp(firstDay)
+    })
+  }
 
   for (var i = 0; i <= 90; i++) {
     var nextDay = new Date()
     nextDay.setDate(firstDay.getDate() + i)
     nextDay.setHours(24, 0, 0, 0)
-    dates.value.push({
-      name: dateToString(nextDay),
-      value: dateToTimestamp(nextDay)
-    })
+
+    if (nextDay.getDay() !== 0) {
+      dates.value.push({
+        name: dateToString(nextDay),
+        value: dateToTimestamp(nextDay)
+      })
+    }
   }
 }
 

@@ -23,7 +23,7 @@ function dateToTimestamp(date) {
 }
 
 function dateToString(date) {
-  return date.toLocaleString('en-GB').split(',')[0]
+  return date.toDateString()
 }
 
 export { timeAsString, timestampToDateString, dateToTimestamp, dateToString, timeDictionary }
