@@ -76,3 +76,9 @@
 
   width: 100%;
 }
+
+@media (max-width: 30em) {
+  .input {
+    font-size: 1.4rem;
+  }
+}

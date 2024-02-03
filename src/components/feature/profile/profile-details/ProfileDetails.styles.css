@@ -49,3 +49,16 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 80em) {
+  .profileDetails {
+    width: 60%;
+  }
+}
+
+@media (max-width: 30em) {
+  .profileDetails {
+    width: 90%;
+    padding-bottom: 3.2rem;
+  }
+}

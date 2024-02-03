@@ -36,3 +36,9 @@
   transform: scale(250%);
   color: var(--color-brand-300);
 }
+
+@media (max-width: 30em) {
+  .footerLinks {
+    flex-direction: column;
+  }
+}

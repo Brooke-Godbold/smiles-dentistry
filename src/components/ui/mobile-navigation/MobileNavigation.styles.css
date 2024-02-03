@@ -1,0 +1,145 @@
+.mobileNavigation {
+  display: none;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 998;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+}
+
+.mobileNavigationMenu {
+  position: fixed;
+  z-index: 999;
+
+  width: 100%;
+
+  top: 0;
+  left: 0;
+
+  padding: 12.8rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+
+.mobileNavigationHeader {
+  border-bottom: 2px solid var(--color-brand-300);
+  padding-bottom: 2.4rem;
+}
+
+.mobileNavigationLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 6.4rem;
+}
+
+.mobileNavigationLinks > li {
+  list-style: none;
+}
+
+.mobileNavigationLinks > li > button {
+  width: 100%;
+}
+
+.mobileNavigationLinks > ul {
+  border-bottom: 2px solid var(--color-brand-800);
+}
+
+.mobileNavigationLinks > ul:last-child {
+  border-bottom: none;
+}
+
+.mobileNavigationLinkList {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4rem;
+}
+
+.mobileNavigationSubLink {
+  color: var(--color-brand-800);
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-family: inherit;
+
+  text-decoration: none;
+}
+
+.mobileNavigationSubLink {
+  padding: 1.2rem 2.4rem;
+  font-size: 1.6rem;
+
+  text-decoration: none;
+
+  border: 2px solid var(--color-brand-300);
+  color: var(--color-brand-500);
+  background-color: var(--color-brand-200);
+  border-radius: var(--border-radius-md);
+
+  font-family: inherit;
+  font-weight: 400;
+
+  width: 100%;
+
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.smallScreenActions {
+  display: none;
+}
+
+.authActionsContainer {
+  display: none;
+}
+
+.admin {
+  display: block;
+}
+
+@media (max-width: 80em) {
+  .mobileNavigation {
+    display: block;
+  }
+}
+
+@media (max-width: 40em) {
+  .smallScreenActions {
+    display: block;
+  }
+
+  .authActionsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+  }
+
+  .mobileNavigationMenu {
+    gap: 6.4rem;
+    padding: 8.4rem;
+  }
+}
+
+@media (max-width: 40em) {
+  .mobileNavigationMenu {
+    padding: 3.2rem;
+  }
+
+  .mobileNavigationLinks {
+    gap: 3.2rem;
+  }
+}
+
+@media (max-width: 30em) {
+  .admin {
+    display: none;
+  }
+}

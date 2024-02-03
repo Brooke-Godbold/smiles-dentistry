@@ -23,3 +23,28 @@
 
   border: 7px double var(--color-brand-400);
 }
+
+.newsletterSignup > h2,
+.newsletterSignup > h3 {
+  text-align: center;
+}
+
+@media (max-width: 40em) {
+  .newsletterSignup {
+    padding: 3.2rem 6.4rem;
+  }
+}
+
+@media (max-width: 30em) {
+  .newsletterSignup {
+    padding: 2.8rem 3.2rem;
+  }
+}
+
+@media (max-width: 30em) {
+  .newsletterSignup {
+    font-size: 1.2rem;
+    padding: 1.6rem 2.4rem;
+    gap: 2.4rem;
+  }
+}

@@ -7,7 +7,7 @@
           :center="center"
           :zoom="17"
           map-type-id="terrain"
-          style="width: 100%; height: 60rem"
+          style="width: 100%; height: 100%"
           :options="options"
         >
           <GMapMarker v-for="marker in markers" :key="marker.id" :position="marker.position" />

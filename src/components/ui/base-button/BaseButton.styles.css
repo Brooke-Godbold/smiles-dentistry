@@ -19,9 +19,16 @@
 
   position: relative;
 
-  min-width: 20rem;
+  min-width: 15rem;
+  height: 100%;
 
   text-align: center;
+
+  text-wrap: nowrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .baseButton:hover {
@@ -49,4 +56,17 @@
 
   transform: scale(100%);
   cursor: auto;
+}
+
+@media (max-width: 120em) {
+  .baseButton {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 30em) {
+  .baseButton {
+    font-size: 1.4rem;
+    padding: 1.2rem 1.8rem;
+  }
 }

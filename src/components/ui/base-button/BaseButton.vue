@@ -4,6 +4,7 @@
     :to="{ name: link }"
     :class="`${$style.baseButton} ${alt ? $style.alt : ''}`"
     data-cy="base-button-link"
+    @click="$emit('action')"
   >
     <slot></slot>
   </router-link>

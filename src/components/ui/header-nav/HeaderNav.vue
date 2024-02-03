@@ -11,19 +11,13 @@
       :class="`${$style.headerNavDropdown} ${isActive ? $style.active : $style.inactive}`"
       data-cy="header-nav-links"
     >
-      <router-link
-        v-for="navLink in navLinks"
-        :class="$style.headerNavLink"
-        :key="navLink.params"
-        :to="{ name: navLink.navRoute, params: navLink.params }"
-        @click="setIsActive(false)"
-        >{{ navLink.name }}</router-link
-      >
+      <NavList :nav-links="navLinks" :class="$style.headerNavLink" @set-is-active="setIsActive" />
     </ul>
   </div>
 </template>
 
 <script setup>
+import NavList from '../nav-list/NavList.vue'
 import { ref } from 'vue'
 
 defineProps({

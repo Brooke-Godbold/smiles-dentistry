@@ -46,3 +46,23 @@
 
   margin-top: 3.2rem;
 }
+
+@media (max-width: 120em) {
+  .modal {
+    top: 30%;
+    width: 75vw;
+    padding: 3.6rem;
+  }
+}
+
+@media (max-width: 40em) {
+  .modal {
+    width: 90vw;
+    padding: 2.4rem;
+  }
+
+  .buttonContainer {
+    display: flex;
+    gap: 3.2rem;
+  }
+}

@@ -82,3 +82,43 @@
 
   cursor: default;
 }
+
+@media (max-width: 80em) {
+  .newAppointmentForm {
+    width: 70%;
+  }
+}
+
+@media (max-width: 40em) {
+  .newAppointmentForm {
+    width: 100%;
+  }
+
+  .newAppointmentContainer {
+    padding: 4.8rem;
+  }
+}
+
+@media (max-width: 30em) {
+  .newAppointmentContainer {
+    padding: 1.2rem;
+  }
+
+  .newAppointmentTitle {
+    font-size: 1.8rem;
+  }
+
+  .newAppointmentFormRow {
+    font-size: 1.6rem;
+  }
+
+  .noCliniciansAvailable,
+  .newAppointmentInfoText {
+    font-size: 1.2rem;
+  }
+
+  .newAppointmentButtonsContainer {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+}

@@ -4,11 +4,14 @@
       <v-icon name="ri-star-smile-fill" />
       <p>All Smiles Dentistry</p>
     </router-link>
-    <div :class="$style.navLinksContainer">
+    <div :class="`${$style.navLinksContainer} ${$style.mobileHiddenLinks}`">
       <HeaderNav :nav-links="services" nav-title="Services" data-cy="header-services-nav" />
       <HeaderNav :nav-links="staff" nav-title="Staff" data-cy="header-staff-nav" />
     </div>
-    <div v-if="firebase.authenticated" :class="$style.navLinksContainer">
+    <div
+      v-if="firebase.authenticated"
+      :class="`${$style.navLinksContainer} ${$style.mobileHiddenLinks}`"
+    >
       <HeaderNav :nav-links="profile" nav-title="Profile" data-cy="header-profile-nav-links" />
       <HeaderNav
         v-if="firebase.userProfile?.role === 'admin'"
@@ -16,16 +19,15 @@
         nav-title="Admin"
         data-cy="header-admin-nav-links"
       />
-      <BaseButton link="Appointment" data-cy="header-appointment-button">
-        <p>Make an Appointment</p>
-      </BaseButton>
-      <BaseButton @action="logout" data-cy="header-logout-button">
-        <p>Logout</p>
-      </BaseButton>
     </div>
-    <div v-else>
-      <LoginModal />
-    </div>
+    <HeaderAuthActions :loading="loading" :class="$style.navLinksContainer" />
+    <MobileNavigation
+      :loading="loading"
+      :profile-links="profile"
+      :service-links="services"
+      :staff-links="staff"
+      :admin-links="admin"
+    />
   </header>
 </template>
 
@@ -35,16 +37,12 @@ import { ref, watch } from 'vue'
 import { useFirebaseStore } from '@/store/firebase'
 
 import HeaderNav from '../header-nav/HeaderNav.vue'
-import BaseButton from '../base-button/BaseButton.vue'
-import LoginModal from '../../feature/authentication/login-modal/LoginModal.vue'
+import MobileNavigation from '../mobile-navigation/MobileNavigation.vue'
+import HeaderAuthActions from '../header-auth-actions/HeaderAuthActions.vue'
 import staffId from '../../../utils/staffId'
-import { signOut } from 'firebase/auth'
-import { useRouter } from 'vue-router'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 
 const firebase = useFirebaseStore()
-
-const router = useRouter()
 
 const services = ref([])
 const staff = ref([])
@@ -75,7 +73,7 @@ const populateUserProfileNav = () => {
 
 populateUserProfileNav()
 
-const { loadMultipleDocs, data } = UseFirebaseDocs.useFirebaseDocs()
+const { loading, loadMultipleDocs, data } = UseFirebaseDocs.useFirebaseDocs()
 
 async function populateHeader() {
   await loadMultipleDocs('service')
@@ -98,12 +96,6 @@ async function populateHeader() {
 }
 
 populateHeader()
-
-async function logout() {
-  const auth = firebase.firebaseAuth
-  await signOut(auth)
-  router.push({ name: 'Home' })
-}
 </script>
 
 <style src="./TheHeader.styles.css" module />

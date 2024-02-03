@@ -53,3 +53,32 @@
 
   gap: 2.4rem;
 }
+
+@media (max-width: 40em) {
+  .heroImage {
+    display: none;
+  }
+
+  .heroImageGradient {
+    background-image: none;
+    background-color: var(--color-brand-700);
+  }
+
+  .heroText {
+    width: 100%;
+    text-align: start;
+  }
+
+  .heroContact {
+    width: 100%;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 30em) {
+  .heroInformation {
+    font-size: 1.4rem;
+    padding: 1.6rem;
+    gap: 2.4rem;
+  }
+}

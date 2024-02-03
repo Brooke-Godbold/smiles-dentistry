@@ -48,3 +48,47 @@
 
   align-items: center;
 }
+
+@media (max-width: 120em) {
+  .header {
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 2.4rem 4.8rem;
+  }
+
+  .navLinksContainer {
+    gap: 3.6rem;
+  }
+
+  .headerHome > svg {
+    transform: scale(175%);
+  }
+}
+
+@media (max-width: 80em) {
+  .mobileHiddenLinks {
+    display: none;
+  }
+}
+
+@media (max-width: 80em) {
+  .navLinksContainer {
+    display: none;
+  }
+}
+
+@media (max-width: 30em) {
+  .headerHome > p {
+    display: none;
+  }
+
+  .headerHome > svg {
+    transform: scale(300%);
+  }
+
+  .header {
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 1.8rem 3.2rem;
+  }
+}

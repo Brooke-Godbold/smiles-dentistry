@@ -23,4 +23,4 @@ import LocationSection from '@/components/feature/location/LocationSection.vue'
 import NewsletterSection from '@/components/feature/home/newsletter/NewsletterSection.vue'
 </script>
 
-<style src="../../../styles/Page.styles.css" module />
+<style src="./HomePage.styles.css" module />
