@@ -60,6 +60,8 @@
   z-index: 1;
 
   color: var(--color-brand-200);
+
+  pointer-events: none;
 }
 
 .locationText {

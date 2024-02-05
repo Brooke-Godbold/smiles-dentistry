@@ -119,7 +119,7 @@ function useFirebaseDocs() {
     } catch (error) {
       error.value = true
     } finally {
-      loadingProfile.value = false
+      loading.value = false
     }
   }
 
@@ -136,7 +136,7 @@ function useFirebaseDocs() {
     } catch (error) {
       error.value = true
     } finally {
-      loadingProfile.value = false
+      loading.value = false
     }
   }
 

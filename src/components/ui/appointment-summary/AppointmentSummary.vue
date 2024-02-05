@@ -50,7 +50,8 @@ defineProps({
   staff: String,
   firstName: String,
   lastName: String,
-  phone: String
+  phone: String,
+  readOnly: Boolean
 })
 </script>
 

@@ -3,7 +3,7 @@
     <LoadingSpinner v-if="loading" :mini="true" data-cy="base-select-loading-spinner" />
     <select
       :class="$style.select"
-      :disabled="loading"
+      :disabled="loading || readOnly"
       v-model="selectModel"
       v-on:change="$emit('onSelectChanged')"
       data-cy="base-select"
@@ -21,7 +21,8 @@ import LoadingSpinner from '../spinner/LoadingSpinner.vue'
 
 defineProps({
   options: Array,
-  loading: Boolean
+  loading: Boolean,
+  readOnly: Boolean
 })
 
 defineEmits(['onSelectChanged'])

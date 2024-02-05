@@ -14,7 +14,7 @@
     >
       <HeaderNav :nav-links="profile" nav-title="Profile" data-cy="header-profile-nav-links" />
       <HeaderNav
-        v-if="firebase.userProfile?.role === 'admin'"
+        v-if="adminAvailable"
         :nav-links="admin"
         nav-title="Admin"
         data-cy="header-admin-nav-links"
@@ -27,12 +27,13 @@
       :service-links="services"
       :staff-links="staff"
       :admin-links="admin"
+      :admin-available="adminAvailable"
     />
   </header>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 
 import { useFirebaseStore } from '@/store/firebase'
 
@@ -47,8 +48,38 @@ const firebase = useFirebaseStore()
 const services = ref([])
 const staff = ref([])
 
-const admin = ref([{ navRoute: 'UserManagement', name: 'User Management' }])
+const admin = computed(() => {
+  return [
+    ...(firebase.userProfile?.role === 'admin'
+      ? [
+          {
+            navRoute: 'UserManagement',
+            name: 'User Management'
+          }
+        ]
+      : []),
+    ...(firebase.userProfile?.role === 'admin' ||
+    (firebase.userProfile?.role === 'staff' &&
+      firebase.userProfile?.services?.includes('reception'))
+      ? [
+          {
+            navRoute: 'AppointmentManagement',
+            name: 'Appointment Management'
+          }
+        ]
+      : [])
+  ]
+})
 const profile = ref([])
+
+const adminAvailable = computed(() => {
+  return (
+    firebase.authenticated &&
+    (firebase.userProfile?.role === 'admin' ||
+      (firebase.userProfile?.role === 'staff' &&
+        firebase.userProfile?.services?.includes('reception')))
+  )
+})
 
 watch(
   () => firebase.userProfile,

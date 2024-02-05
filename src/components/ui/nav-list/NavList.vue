@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-defineEmits('setIsActive')
+defineEmits(['setIsActive'])
 
 defineProps({
   navLinks: Array

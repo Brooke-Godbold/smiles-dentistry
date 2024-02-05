@@ -10,6 +10,7 @@
         :last-name="appointment.lastName"
         :phone="appointment.phone"
         :price="appointment.price"
+        :read-only="true"
       />
     </div>
   </BaseItem>

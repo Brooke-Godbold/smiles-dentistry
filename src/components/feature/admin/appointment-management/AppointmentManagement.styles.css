@@ -1,0 +1,10 @@
+.appointmentManagement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+
+  width: 100%;
+
+  list-style: none;
+}

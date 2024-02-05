@@ -37,7 +37,7 @@ describe('<NewAppointmentPayment />', () => {
       phone: '01245 669 669',
       service: 'extraction',
       email: 'john@gmail.com',
-      paid: true,
+      paid: false,
       price: 100
     }
 

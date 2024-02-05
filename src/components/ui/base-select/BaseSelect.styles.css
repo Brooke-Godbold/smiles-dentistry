@@ -22,7 +22,7 @@
   text-align: center;
 }
 
-.input:disabled {
+.select:disabled {
   background-color: var(--color-white-600);
   color: var(--color-white-500);
   border: 2px solid var(--color-white-700);

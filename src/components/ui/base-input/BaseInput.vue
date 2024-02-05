@@ -3,8 +3,8 @@
     <input
       :class="`${$style.input} ${error ? $style.error : ''}`"
       :type="type || 'text'"
-      :disabled="loading"
       :value="value || inputModel"
+      :disabled="loading || readOnly"
       v-model="inputModel"
       v-on:change="(e) => $emit('onFileUploaded', e)"
       data-cy="base-input"
@@ -24,7 +24,8 @@ defineProps({
   type: String,
   error: Boolean,
   errorMessage: String,
-  value: String
+  value: String,
+  readOnly: Boolean
 })
 
 const inputModel = defineModel()

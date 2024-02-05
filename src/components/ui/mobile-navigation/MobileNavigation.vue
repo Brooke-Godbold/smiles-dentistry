@@ -18,10 +18,7 @@
             <li v-if="firebase.authenticated">
               <BaseButton @action="() => setOpenNavLinks(profileLinks)"> Profile </BaseButton>
             </li>
-            <li
-              v-if="firebase.authenticated && firebase.userProfile?.role === 'admin'"
-              :class="$style.admin"
-            >
+            <li v-if="adminAvailable" :class="$style.admin">
               <BaseButton @action="() => setOpenNavLinks(adminLinks)"> Admin </BaseButton>
             </li>
             <HeaderAuthActions
@@ -68,7 +65,8 @@ defineProps({
   serviceLinks: Array,
   staffLinks: Array,
   profileLinks: Array,
-  adminLinks: Array
+  adminLinks: Array,
+  adminAvailable: Boolean
 })
 
 const isOpen = ref(false)

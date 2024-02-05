@@ -15,6 +15,7 @@
         :last-name="newAppointmentStore.newAppointmentPatient.lastName"
         :phone="newAppointmentStore.newAppointmentPatient.phone"
         :price="newAppointmentStore.newAppointmentDetails.price"
+        :read-only="true"
       />
       <p :class="$style.noCliniciansAvailable" cy-data="appointment-payment-notification">
         Payment will be taken at the clinic on the day of your Appointment
@@ -56,7 +57,7 @@ const { loading, error, addDoc } = UseFirebaseDocs.useFirebaseDocs()
 
 const confirm = async () => {
   const newAppointment = {
-    paid: true,
+    paid: false,
     ...newAppointmentStore.newAppointmentDetails,
     ...newAppointmentStore.newAppointmentPatient
   }

@@ -1,7 +1,7 @@
 <template>
   <router-link
     v-if="link"
-    :to="{ name: link }"
+    :to="{ name: link, ...(routerParams && { params: routerParams }) }"
     :class="`${$style.baseButton} ${alt ? $style.alt : ''}`"
     data-cy="base-button-link"
     @click="$emit('action')"
@@ -28,6 +28,7 @@ defineEmits(['action'])
 
 defineProps({
   link: String,
+  routerParams: Object,
   loading: Boolean,
   type: String,
   alt: Boolean

@@ -18,6 +18,10 @@ const StaffAppointments = () =>
 const Admin = () => import('../components/page/admin/AdminPage.vue')
 const UserManagement = () =>
   import('../components/feature/admin/user-management/UserManagement.vue')
+const AppointmentManagement = () =>
+  import('../components/feature/admin/appointment-management/AppointmentManagement.vue')
+const AppointmentDetail = () =>
+  import('../components/feature/admin/appointment-detail/AppointmentDetail.vue')
 
 const router = createRouter({
   history: createWebHistory(),
@@ -50,10 +54,26 @@ const router = createRouter({
     {
       path: '/admin',
       component: Admin,
-      meta: { adminAccess: true },
       children: [
         { path: '', redirect: { name: 'UserManagement' } },
-        { path: 'users', name: 'UserManagement', component: UserManagement }
+        {
+          path: 'users',
+          name: 'UserManagement',
+          component: UserManagement,
+          meta: { adminAccess: true }
+        },
+        {
+          path: 'appointments',
+          name: 'AppointmentManagement',
+          component: AppointmentManagement,
+          meta: { receptionAccess: true }
+        },
+        {
+          path: 'appointments/:appointmentId',
+          name: 'AppointmentDetail',
+          component: AppointmentDetail,
+          meta: { receptionAccess: true }
+        }
       ]
     },
     { path: '/:notFound(.*)*', name: 'NotFound', component: NotFound }
@@ -84,6 +104,20 @@ router.beforeEach(async (to, from, next) => {
         next({ name: 'NotFound' })
       } else {
         next()
+      }
+    }
+  } else if (to.matched.some((route) => route.meta.receptionAccess)) {
+    if (!(await firebase.getCurrentUser())) {
+      next({ name: 'NotFound' })
+    } else {
+      if (
+        firebase.userProfile?.role === 'admin' ||
+        (firebase.userProfile?.role === 'staff' &&
+          firebase.userProfile?.services.includes('reception'))
+      ) {
+        next()
+      } else {
+        next({ name: 'NotFound' })
       }
     }
   } else if (to.matched.some((route) => route.meta.userAccess)) {
