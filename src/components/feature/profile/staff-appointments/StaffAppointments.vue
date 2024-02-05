@@ -1,7 +1,4 @@
 <template>
-  <ToastNotification ref="toast">
-    <p>Something went wrong</p>
-  </ToastNotification>
   <LoadingSpinner v-if="loading" />
   <section v-else :class="$style.staffAppointments">
     <h2>Upcoming Appointments</h2>
@@ -20,14 +17,14 @@
 import AppointmentItem from '../../appointment/AppointmentItem.vue'
 import { useFirebaseStore } from '@/store/firebase'
 import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import staffId from '@/utils/staffId'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const firebase = useFirebaseStore()
-
-const toast = ref(null)
 
 const { loading, error, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
@@ -43,7 +40,7 @@ const loadExistingAppointments = () => {
 }
 
 watch(error, (isError) => {
-  if (isError) toast.value.openToast()
+  if (isError) open('error', 'Something went wrong')
 })
 
 loadExistingAppointments()

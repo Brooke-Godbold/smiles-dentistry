@@ -1,7 +1,4 @@
 <template>
-  <ToastNotification type="success" ref="toast">
-    <p>{{ `Successfully Updated Appointment #${route.params.appointmentId}` }}</p>
-  </ToastNotification>
   <section :class="$style.appointmentDetail">
     <LoadingSpinner v-if="loading" />
     <div v-if="!loading && data" :class="$style.appointmentDetail">
@@ -107,7 +104,6 @@ import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import BaseSelect from '@/components/ui/base-select/BaseSelect.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
 import BaseItem from '@/components/ui/base-item/BaseItem.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
@@ -118,11 +114,12 @@ import {
   timestampToDateString
 } from '@/utils/time'
 import { UseAppointmentDetailsData } from '@/hooks/useAppointmentDetailsData'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const route = useRoute()
 const router = useRouter()
-
-const toast = ref(null)
 
 const { loading, data, loadSingleDoc, addDoc, error } = UseFirebaseDocs.useFirebaseDocs()
 const {
@@ -211,7 +208,8 @@ const updateAppointment = async () => {
 
   await addDoc('appointment', route.params.appointmentId, updatedAppointment)
 
-  if (!error.value) toast.value.openToast()
+  if (!error.value)
+    open('success', `Successfully Updated Appointment #${route.params.appointmentId}`)
 }
 </script>
 

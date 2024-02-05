@@ -1,8 +1,5 @@
 <template>
   <section :class="$style.newAppointmentContainer">
-    <ToastNotification ref="toast">
-      <p>Looks like something went wrong</p>
-    </ToastNotification>
     <div :class="$style.newAppointmentForm">
       <h2 :class="$style.newAppointmentTitle">Your Appointment</h2>
       <AppointmentSummary
@@ -34,20 +31,20 @@
 
 <script setup>
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import AppointmentSummary from '@/components/ui/appointment-summary/AppointmentSummary.vue'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const emit = defineEmits(['previous'])
 
 const newAppointmentStore = useNewAppointmentStore()
 
 const router = useRouter()
-
-const toast = ref(null)
 
 const previousStep = () => {
   emit('previous', 'patient', false)
@@ -65,13 +62,14 @@ const confirm = async () => {
   await addDoc('appointment', Date.now().toString(), newAppointment)
 
   if (!error.value) {
+    open('success', 'Successfully booked your Appointment!')
     router.push({ name: 'UserAppointments' })
     newAppointmentStore.resetAppointmentCache()
   }
 }
 
 watch(error, (isError) => {
-  if (isError) toast.value.openToast()
+  if (isError) open('error', 'Looks like something went wrong')
 })
 </script>
 

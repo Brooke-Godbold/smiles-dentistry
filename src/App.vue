@@ -1,4 +1,7 @@
 <template>
+  <ToastNotification :type="type" ref="toast">
+    {{ message }}
+  </ToastNotification>
   <div :class="$style.appContainer">
     <TheHeader />
     <div :class="$style.appContent">
@@ -15,11 +18,14 @@
 <script setup>
 import TheHeader from './components/ui/header/TheHeader.vue'
 import TheFooter from './components/ui/footer/TheFooter.vue'
+import ToastNotification from './components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from './store/firebase'
+import { UseToast } from './hooks/useToast'
 
 const firebase = useFirebaseStore()
-
 firebase.connectToFirebase()
+
+const { toast, type, message } = UseToast.useToast()
 </script>
 
 <style src="./App.styles.css" module />

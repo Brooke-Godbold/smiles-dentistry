@@ -1,7 +1,4 @@
 <template>
-  <ToastNotification ref="toast" :type="toastType">
-    <p>{{ toastMessage }}</p>
-  </ToastNotification>
   <form @submit.prevent="updateProfile" :class="$style.profileDetails">
     <h2>Profile Details</h2>
     <div :class="$style.profileDetailsRow" data-cy="profile-details-email">
@@ -99,10 +96,12 @@
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import BaseTextarea from '@/components/ui/base-textarea/BaseTextarea.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
 import { ref, watch } from 'vue'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const firebase = useFirebaseStore()
 
@@ -119,10 +118,6 @@ const biography = ref(firebase.userProfile?.bio || '')
 const biographyError = ref(false)
 
 const services = ref(firebase.userProfile?.services || [])
-
-const toast = ref(null)
-const toastMessage = ref('')
-const toastType = ref('')
 
 const { loading, error, addDoc, uploadToStorageBucket, storageDownloadUrl, refreshUserProfile } =
   UseFirebaseDocs.useFirebaseDocs()
@@ -157,14 +152,10 @@ watch(loading, (isLoading) => {
   if (isLoading) return
 
   if (!error.value) {
-    toastMessage.value = 'Successfully updated Profile!'
-    toastType.value = 'success'
+    open('success', 'Successfully updated Profile!')
   } else {
-    toastMessage.value = 'Unable to update Profile at this time'
-    toastType.value = 'error'
+    open('error', 'Unable to update Profile at this time')
   }
-
-  toast.value.openToast()
 })
 
 const validate = () => {
@@ -197,9 +188,7 @@ const validate = () => {
   }
 
   if (isError) {
-    toastMessage.value = 'Invalid input supplied!'
-    toastType.value = 'error'
-    toast.value.openToast()
+    open('error', 'Invalid input supplied!')
     return false
   }
 

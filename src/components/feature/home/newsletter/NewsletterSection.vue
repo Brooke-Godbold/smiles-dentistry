@@ -1,7 +1,4 @@
 <template>
-  <ToastNotification ref="toast" :type="toastType">
-    <p>{{ toastMessage }}</p>
-  </ToastNotification>
   <section :class="$style.newsletterSection">
     <BaseItem>
       <div :class="$style.newsletterSignup">
@@ -31,14 +28,13 @@
 import BaseItem from '@/components/ui/base-item/BaseItem.vue'
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { ref, watch } from 'vue'
 import { UseBrevo } from '@/hooks/useBrevo'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const email = ref('')
-const toast = ref(null)
-const toastMessage = ref('')
-const toastType = ref('')
 
 const { loading, error, errorMessage, addEmailContact } = UseBrevo.useBrevo()
 
@@ -50,15 +46,11 @@ watch(loading, (isLoading) => {
   if (isLoading) return
 
   if (error.value) {
-    toastMessage.value = errorMessage
-    toastType.value = 'error'
+    open('error', errorMessage)
   } else {
-    toastMessage.value = 'Successfully signed up!'
-    toastType.value = 'success'
+    open('success', 'Successfully signed up!')
     email.value = ''
   }
-
-  toast.value.openToast()
 })
 </script>
 

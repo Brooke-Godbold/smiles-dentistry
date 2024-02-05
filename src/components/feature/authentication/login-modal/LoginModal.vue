@@ -1,11 +1,8 @@
 <template>
-  <ToastNotification ref="toast" type="error">
-    <p>Something went wrong signing in!</p>
-  </ToastNotification>
   <BaseButton
     button-text="Login"
     :loading="firebase.initializing"
-    @action="open"
+    @action="openLogin"
     data-cy="header-login-button"
   >
     <p>Login</p>
@@ -43,9 +40,11 @@
 import { ref, watch } from 'vue'
 import BaseButton from '../../../ui/base-button/BaseButton.vue'
 import BaseInput from '@/components/ui/base-input/BaseInput.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { useFirebaseStore } from '@/store/firebase'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const firebase = useFirebaseStore()
 
@@ -54,11 +53,9 @@ const username = ref('')
 //password
 const password = ref('')
 
-const toast = ref(null)
-
 const isOpen = ref(false)
 
-const open = () => {
+const openLogin = () => {
   isOpen.value = true
 }
 
@@ -86,7 +83,7 @@ async function loginUser() {
 }
 
 watch(error, (isError) => {
-  if (isError) toast.value.openToast()
+  if (isError) open('error', 'Something went wrong signing in!')
 })
 </script>
 

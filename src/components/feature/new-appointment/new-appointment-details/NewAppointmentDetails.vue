@@ -1,8 +1,5 @@
 <template>
   <section :class="$style.newAppointmentContainer">
-    <ToastNotification ref="toast">
-      <p>Looks like something went wrong</p>
-    </ToastNotification>
     <div :class="$style.newAppointmentForm">
       <h2 :class="$style.newAppointmentTitle">New Appointment Details</h2>
       <div :class="$style.newAppointmentFormRow" cy-data="appointment-details-service">
@@ -76,14 +73,14 @@
 import { ref, watch } from 'vue'
 import BaseSelect from '../../../ui/base-select/BaseSelect.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
-import ToastNotification from '@/components/ui/toast-notification/ToastNotification.vue'
 import { availableDatesList, timeDictionary } from '../../../../utils/time.js'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
 import { UseAppointmentDetailsData } from '@/hooks/useAppointmentDetailsData'
+import { UseToast } from '@/hooks/useToast'
+
+const { open } = UseToast.useToast()
 
 const emit = defineEmits(['next'])
-
-const toast = ref(null)
 
 const newAppointmentStore = useNewAppointmentStore()
 const newAppointmentDetails = newAppointmentStore.newAppointmentDetails
@@ -130,7 +127,7 @@ const updateAppointmentDetails = () => {
 }
 
 watch(appointmentDataError, (isError) => {
-  if (isError) toast.value.openToast()
+  if (isError) open('error', 'Looks like something went wrong')
 })
 </script>
 
