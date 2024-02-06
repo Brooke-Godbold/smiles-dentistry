@@ -15,11 +15,11 @@
         <div :class="$style.locationGradient" />
         <div :class="$style.locationInformation">
           <h2>Our Location</h2>
-          <div :class="$style.addressSection">
+          <address :class="$style.addressSection">
             <p cy-data="location-street">123 Smile Street</p>
             <p cy-data="location-city">London</p>
             <p cy-data="location-postcode">SE16 7HH</p>
-          </div>
+          </address>
           <p :class="$style.locationText">
             Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
             Sed aliquam vitae nisi ut faucibus. Praesent tempor ut arcu sed ullamcorper. Nulla

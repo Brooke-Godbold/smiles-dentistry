@@ -1,3 +1,9 @@
+.appointmentItemListItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .appointmentItem {
   width: 100%;
   border: 7px double var(--color-brand-400);

@@ -1,7 +1,7 @@
 <template>
-  <section :class="$style.page">
+  <main :class="$style.page">
     <StaffItem v-if="staffId" :staff-id="staffId" />
-  </section>
+  </main>
 </template>
 
 <script setup>

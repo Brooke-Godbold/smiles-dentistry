@@ -1,3 +1,4 @@
+.appointmentManagementSection,
 .appointmentManagement {
   display: flex;
   flex-direction: column;
@@ -7,4 +8,8 @@
   width: 100%;
 
   list-style: none;
+}
+
+.appointmentManagementSection {
+  gap: 4.8rem;
 }

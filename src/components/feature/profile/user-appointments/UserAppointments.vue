@@ -2,13 +2,13 @@
   <LoadingSpinner v-if="loading" />
   <section v-else :class="$style.userAppointments">
     <h2>My Appointments</h2>
-    <div cy-data="appointments-list" :class="$style.userAppointmentsList" v-if="data?.length > 0">
+    <ul cy-data="appointments-list" :class="$style.userAppointmentsList" v-if="data?.length > 0">
       <AppointmentItem
         v-for="appointment in data"
         :key="appointment.id"
         :appointment="appointment"
       />
-    </div>
+    </ul>
     <h3 v-else cy-data="no-appointments">You don't have any Appointments</h3>
   </section>
 </template>

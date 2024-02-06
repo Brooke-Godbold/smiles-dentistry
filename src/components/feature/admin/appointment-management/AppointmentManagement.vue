@@ -1,16 +1,18 @@
 <template>
-  <h2>Appointment Management</h2>
-  <loading-spinner v-if="loading" />
-  <ul v-else :class="$style.appointmentManagement">
-    <appointment-management-item
-      v-for="item in data"
-      :key="item.id"
-      :patient="patientName(item)"
-      :clinician="item.staff"
-      :date="dateString(item)"
-      :id="item.id"
-    />
-  </ul>
+  <section :class="$style.appointmentManagementSection">
+    <h2>Appointment Management</h2>
+    <loading-spinner v-if="loading" />
+    <ul v-else :class="$style.appointmentManagement">
+      <appointment-management-item
+        v-for="item in data"
+        :key="item.id"
+        :patient="patientName(item)"
+        :clinician="item.staffName"
+        :date="dateString(item)"
+        :id="item.id"
+      />
+    </ul>
+  </section>
 </template>
 
 <script setup>

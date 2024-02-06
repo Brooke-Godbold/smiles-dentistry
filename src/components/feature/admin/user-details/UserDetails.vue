@@ -1,11 +1,18 @@
 <template>
-  <div :class="$style.userDetails">
-    <p :class="$style.userEmail" cy-data="user-email">{{ user.email }}</p>
-    <BaseSelect :loading="usersUpdating" :options="roles" v-model="userRole" cy-data="user-role" />
-    <BaseButtonVue :loading="usersUpdating" @action="updateUser" cy-data="update-button">
-      <p>Save</p>
-    </BaseButtonVue>
-  </div>
+  <li :class="$style.userDetailsListItem">
+    <form :class="$style.userDetails" @submit.prevent="updateUser">
+      <p :class="$style.userEmail" cy-data="user-email">{{ user.email }}</p>
+      <BaseSelect
+        :loading="usersUpdating"
+        :options="roles"
+        v-model="userRole"
+        cy-data="user-role"
+      />
+      <BaseButtonVue type="submit" :loading="usersUpdating" cy-data="update-button">
+        <p>Save</p>
+      </BaseButtonVue>
+    </form>
+  </li>
 </template>
 
 <script setup>

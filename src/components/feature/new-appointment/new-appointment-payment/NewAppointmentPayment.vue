@@ -1,13 +1,13 @@
 <template>
   <section :class="$style.newAppointmentContainer">
-    <div :class="$style.newAppointmentForm">
+    <form :class="$style.newAppointmentForm" @submit.prevent>
       <h2 :class="$style.newAppointmentTitle">Your Appointment</h2>
       <AppointmentSummary
         cy-data="appointment-payment-summary"
         :service="newAppointmentStore.newAppointmentDetails.service"
         :date="newAppointmentStore.newAppointmentDetails.date"
         :time="newAppointmentStore.newAppointmentDetails.time"
-        :staff="newAppointmentStore.newAppointmentDetails.staff"
+        :staff="newAppointmentStore.newAppointmentDetails.staffName"
         :first-name="newAppointmentStore.newAppointmentPatient.firstName"
         :last-name="newAppointmentStore.newAppointmentPatient.lastName"
         :phone="newAppointmentStore.newAppointmentPatient.phone"
@@ -25,7 +25,7 @@
           <p>Confirm Appointment</p>
         </BaseButton>
       </div>
-    </div>
+    </form>
   </section>
 </template>
 
@@ -63,7 +63,16 @@ const confirm = async () => {
 
   if (!error.value) {
     open('success', 'Successfully booked your Appointment!')
-    router.push({ name: 'UserAppointments' })
+
+    if (
+      firebase.userProfile.role === 'staff' &&
+      firebase.userProfile.services.includes('reception')
+    ) {
+      router.push({ name: 'AppointmentManagement' })
+    } else {
+      router.push({ name: 'UserAppointments' })
+    }
+
     newAppointmentStore.resetAppointmentCache()
   }
 }

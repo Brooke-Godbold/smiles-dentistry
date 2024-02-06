@@ -1,7 +1,7 @@
 <template>
   <BaseItem>
     <LoadingSpinner v-if="loading" />
-    <div v-if="staffData" :class="$style.staffContainer" data-cy="staff-item">
+    <section v-if="staffData" :class="$style.staffContainer" data-cy="staff-item">
       <img :src="staffData.profileImage" :class="$style.staffImage" />
       <div :class="$style.staffImageGradient" />
       <div :class="$style.staffInformation">
@@ -9,14 +9,16 @@
           {{ `${staffData.firstName} ${staffData.lastName}` }}
         </h1>
         <h2 data-cy="staff-item-qualification">{{ staffData.qualification }}</h2>
-        <div :class="$style.servicesContainer" data-cy="staff-item-services">
-          <span v-for="service in staffData.services" :key="service" :class="$style.serviceTag">
-            {{ `${service.charAt(0).toUpperCase()}${service.slice(1)}s` }}
-          </span>
-        </div>
+        <ul :class="$style.servicesContainer" data-cy="staff-item-services">
+          <li v-for="service in staffData.services" :key="service">
+            <span :class="$style.serviceTag">
+              {{ `${service.charAt(0).toUpperCase()}${service.slice(1)}s` }}
+            </span>
+          </li>
+        </ul>
         <p :class="$style.staffText" data-cy="staff-item-bio">{{ staffData.bio }}</p>
       </div>
-    </div>
+    </section>
   </BaseItem>
 </template>
 

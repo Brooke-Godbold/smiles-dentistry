@@ -1,7 +1,7 @@
 <template>
   <section :class="$style.newsletterSection">
     <BaseItem>
-      <div :class="$style.newsletterSignup">
+      <form :class="$style.newsletterSignup" @submit.prevent="signup">
         <h2 cy-data="newsletter-heading-primary">Want the best Dental Advice?</h2>
         <p>
           Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
@@ -16,10 +16,10 @@
         <h3 cy-data="newsletter-heading-secondary">Get the best advice for free!</h3>
         <h2 cy-data="newsletter-heading-tertiary">Sign up with your Email below</h2>
         <BaseInput cy-data="newsletter-email" :loading="loading" v-model="email" />
-        <BaseButton cy-data="newsletter-signup-button" :loading="loading" @action="signup"
+        <BaseButton type="submit" cy-data="newsletter-signup-button" :loading="loading"
           >Sign Up Now!</BaseButton
         >
-      </div>
+      </form>
     </BaseItem>
   </section>
 </template>

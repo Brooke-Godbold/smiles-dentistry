@@ -1,6 +1,14 @@
 <template>
   <section :class="$style.newAppointmentContainer">
-    <div :class="$style.newAppointmentForm">
+    <LoadingSpinner v-if="loading" />
+    <div v-else-if="data" :class="$style.upcomingAppointment">
+      <h2>Your Upcoming Appointment</h2>
+      <AppointmentItem :appointment="data[0]" />
+      <p :class="$style.noCliniciansAvailable">
+        If you wish to amend this, please call us on 07665 669669
+      </p>
+    </div>
+    <form v-else :class="$style.newAppointmentForm" @submit.prevent>
       <h2 :class="$style.newAppointmentTitle">New Appointment Details</h2>
       <div :class="$style.newAppointmentFormRow" cy-data="appointment-details-service">
         <label>Your Service</label>
@@ -65,7 +73,7 @@
           <p>Next</p>
         </BaseButton>
       </transition>
-    </div>
+    </form>
   </section>
 </template>
 
@@ -73,10 +81,14 @@
 import { ref, watch } from 'vue'
 import BaseSelect from '../../../ui/base-select/BaseSelect.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
+import LoadingSpinner from '@/components/ui/spinner/LoadingSpinner.vue'
+import AppointmentItem from '../../appointment/AppointmentItem.vue'
 import { availableDatesList, timeDictionary } from '../../../../utils/time.js'
 import { useNewAppointmentStore } from '@/store/newAppointmentStore'
 import { UseAppointmentDetailsData } from '@/hooks/useAppointmentDetailsData'
 import { UseToast } from '@/hooks/useToast'
+import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
+import { useFirebaseStore } from '@/store/firebase'
 
 const { open } = UseToast.useToast()
 
@@ -89,6 +101,10 @@ const service = ref(newAppointmentDetails.service)
 const selectedDate = ref(newAppointmentDetails.date)
 const selectedTime = ref(newAppointmentDetails.time)
 const selectedClinician = ref(newAppointmentDetails.staff)
+
+const firebase = useFirebaseStore()
+
+const { loading, data, loadMultipleDocs } = UseFirebaseDocs.useFirebaseDocs()
 
 const {
   loadingAppointmentData,
@@ -110,17 +126,14 @@ const refreshStaffForDate = async () => {
   await getStaffForDate(selectedDate.value, selectedTime.value)
 }
 
-loadServices()
-refreshStaffForService()
-refreshStaffForDate()
-
 const updateAppointmentDetails = () => {
   newAppointmentStore.updateAppointmentDetails(
     service.value,
     selectedDate.value,
     selectedTime.value,
     selectedClinician.value,
-    servicePriceLookup.value.find((obj) => obj.service === service.value).price
+    servicePriceLookup.value.find((obj) => obj.service === service.value).price,
+    availableClinicians.value.find((obj) => obj.value === selectedClinician.value).name
   )
 
   emit('next', 'patient', true)
@@ -129,6 +142,19 @@ const updateAppointmentDetails = () => {
 watch(appointmentDataError, (isError) => {
   if (isError) open('error', 'Looks like something went wrong')
 })
+
+watch(data, (newData) => {
+  if (!newData) {
+    loadServices()
+    refreshStaffForService()
+    refreshStaffForDate()
+  }
+})
+
+loadMultipleDocs('appointment', [
+  { field: 'email', operator: '==', value: firebase.userEmail },
+  { field: 'date', operator: '>=', value: Date.now() }
+])
 </script>
 
 <style src="../NewAppointment.styles.css" module />

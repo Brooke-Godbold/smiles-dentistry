@@ -49,6 +49,8 @@
 .servicesContainer {
   display: flex;
   gap: 2.4rem;
+
+  list-style: none;
 }
 
 .serviceTag {

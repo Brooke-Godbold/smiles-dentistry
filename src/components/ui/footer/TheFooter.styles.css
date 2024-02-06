@@ -16,9 +16,11 @@
   align-items: center;
   justify-content: center;
   gap: 2.4rem;
+
+  list-style: none;
 }
 
-.footerLinks > a {
+.footerLinks > li > a {
   text-decoration: none;
   color: var(--color-brand-300);
 
@@ -30,9 +32,11 @@
   align-items: center;
   justify-content: center;
   gap: 5.4rem;
+
+  list-style: none;
 }
 
-.socialLinks > a > svg {
+.socialLinks > li > a > svg {
   transform: scale(250%);
   color: var(--color-brand-300);
 }

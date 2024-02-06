@@ -63,6 +63,8 @@
   border: 2px solid var(--color-white-700);
   background-color: var(--color-white-500);
   color: var(--color-white-700);
+
+  text-align: center;
 }
 
 .newAppointmentInfoText {
@@ -81,6 +83,23 @@
   padding: 0.8rem 1.2rem;
 
   cursor: default;
+}
+
+.upcomingAppointment {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.2rem;
+}
+
+.upcomingAppointment > h2 {
+  text-align: center;
+}
+
+.upcomingAppointment > li {
+  width: 100%;
 }
 
 @media (max-width: 80em) {

@@ -1,10 +1,10 @@
 <template>
   <main :class="$style.page">
-    <div :class="$style.pageTitleSection">
+    <section :class="$style.pageTitleSection">
       <v-icon name="ri-star-smile-fill" />
       <h1>All Smiles Dentistry</h1>
       <v-icon name="ri-star-smile-fill" />
-    </div>
+    </section>
     <HeroSection />
     <h2 :class="$style.pageHeading">Top Quality Procedures</h2>
     <ServiceItem service-id="checkup" />

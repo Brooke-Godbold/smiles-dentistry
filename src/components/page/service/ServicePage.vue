@@ -1,7 +1,7 @@
 <template>
-  <section :class="$style.page">
+  <main :class="$style.page">
     <ServiceItem v-if="serviceId" :service-id="serviceId" />
-  </section>
+  </main>
 </template>
 
 <script setup>

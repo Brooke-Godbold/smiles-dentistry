@@ -4,13 +4,14 @@
     :loading="firebase.initializing"
     @action="openLogin"
     data-cy="header-login-button"
+    :alt="makeAppointment"
   >
-    <p>Login</p>
+    <p>{{ `${makeAppointment ? 'Login to make an Appointment' : 'Login'}` }}</p>
   </BaseButton>
   <teleport to="body">
     <div v-if="isOpen" :class="$style.overlay" />
     <transition name="modal">
-      <div v-if="isOpen" :class="$style.modal" cy-data="login-modal">
+      <form v-if="isOpen" :class="$style.modal" cy-data="login-modal" @submit.prevent>
         <h3 :class="$style.loginTitle">Login</h3>
         <div :class="$style.loginModalRow">
           <label>Username</label>
@@ -31,7 +32,7 @@
             <p>Login</p>
           </BaseButton>
         </div>
-      </div>
+      </form>
     </transition>
   </teleport>
 </template>
@@ -44,13 +45,15 @@ import { useFirebaseStore } from '@/store/firebase'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import { UseToast } from '@/hooks/useToast'
 
+defineProps({
+  makeAppointment: Boolean
+})
+
 const { open } = UseToast.useToast()
 
 const firebase = useFirebaseStore()
 
-//test1@gmail.com
 const username = ref('')
-//password
 const password = ref('')
 
 const isOpen = ref(false)
@@ -79,7 +82,7 @@ async function signupUser() {
 }
 
 async function loginUser() {
-  login(username.value, password.value)
+  await login(username.value, password.value)
 }
 
 watch(error, (isError) => {

@@ -4,7 +4,7 @@
     <div v-if="!loading && data" :class="$style.appointmentDetail">
       <h2>{{ `Appointment #${route.params.appointmentId}` }}</h2>
       <BaseItem>
-        <div :class="$style.appointmentDetailContainer">
+        <form :class="$style.appointmentDetailContainer" @submit.prevent="updateAppointment">
           <div :class="$style.appointmentDetailTable">
             <div :class="$style.appointmentDetailRow">
               <label>Email</label>
@@ -86,13 +86,10 @@
             <label>Paid</label>
             <BaseInput type="checkbox" v-model="paid" />
           </div>
-          <BaseButton
-            v-if="canEdit"
-            @action="updateAppointment"
-            :loading="loadingAppointmentData || loading"
+          <BaseButton v-if="canEdit" type="submit" :loading="loadingAppointmentData || loading"
             >Update Appointment</BaseButton
           >
-        </div>
+        </form>
       </BaseItem>
     </div>
   </section>
@@ -202,6 +199,7 @@ const updateAppointment = async () => {
     date: date.value,
     time: time.value,
     staff: staff.value,
+    staffName: availableClinicians.value.find((obj) => obj.value === staff.value).name,
     paid: paid.value,
     price: servicePriceLookup.value.find((item) => item.service === service.value).price
   }

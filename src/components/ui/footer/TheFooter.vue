@@ -1,16 +1,22 @@
 <template>
   <footer :class="$style.footer">
-    <div :class="$style.footerLinks" cy-data="footer-links">
-      <router-link :to="{ name: 'Home' }">Privacy Policy</router-link>
-      <router-link :to="{ name: 'Home' }">Terms & Conditions</router-link>
-      <router-link :to="{ name: 'Home' }">Contact</router-link>
-      <router-link :to="{ name: 'Home' }">Careers</router-link>
-    </div>
-    <div :class="$style.socialLinks" cy-data="footer-social">
-      <a href="#"><v-icon name="bi-twitter" /></a>
-      <a href="#"><v-icon name="bi-facebook" /></a>
-      <a href="#"><v-icon name="bi-instagram" /></a>
-    </div>
+    <ul :class="$style.footerLinks" cy-data="footer-links">
+      <li><router-link :to="{ name: 'Home' }">Privacy Policy</router-link></li>
+      <li><router-link :to="{ name: 'Home' }">Terms & Conditions</router-link></li>
+      <li><router-link :to="{ name: 'Home' }">Contact</router-link></li>
+      <li><router-link :to="{ name: 'Home' }">Careers</router-link></li>
+    </ul>
+    <ul :class="$style.socialLinks" cy-data="footer-social">
+      <li>
+        <a href="#"><v-icon name="bi-twitter" /></a>
+      </li>
+      <li>
+        <a href="#"><v-icon name="bi-facebook" /></a>
+      </li>
+      <li>
+        <a href="#"><v-icon name="bi-instagram" /></a>
+      </li>
+    </ul>
   </footer>
 </template>
 

@@ -34,9 +34,15 @@
           fermentum tempus condimentum.
         </p>
         <div :class="$style.heroContact">
-          <BaseButton link="Appointment" :alt="true" cy-data="hero-button">
+          <BaseButton
+            v-if="firebase.authenticated"
+            link="Appointment"
+            :alt="true"
+            cy-data="hero-button"
+          >
             <p>Make an Appointment Now</p>
           </BaseButton>
+          <LoginModal v-else :make-appointment="true" />
           <h2>OR</h2>
           <p>Call us on:</p>
           <h1 cy-data="hero-phone">01784 998 778</h1>
@@ -49,6 +55,10 @@
 <script setup>
 import BaseItem from '@/components/ui/base-item/BaseItem.vue'
 import BaseButton from '@/components/ui/base-button/BaseButton.vue'
+import LoginModal from '../../authentication/login-modal/LoginModal.vue'
+import { useFirebaseStore } from '@/store/firebase'
+
+const firebase = useFirebaseStore()
 </script>
 
 <style src="./HeroSection.styles.css" module />

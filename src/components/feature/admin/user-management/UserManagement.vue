@@ -1,8 +1,8 @@
 <template>
-  <div :class="$style.userManagement">
+  <section :class="$style.userManagement">
     <h2>User Management</h2>
     <LoadingSpinner v-if="loading" />
-    <div v-else :class="$style.usersList" cy-data="user-list">
+    <ul v-else :class="$style.usersList" cy-data="user-list">
       <UserDetails
         v-for="user in users"
         :key="user"
@@ -11,8 +11,8 @@
         @set-loading="setLoading"
         :usersUpdating="usersUpdating"
       />
-    </div>
-  </div>
+    </ul>
+  </section>
 </template>
 
 <script setup>

@@ -1,7 +1,18 @@
 <template>
   <section :class="$style.newAppointmentContainer">
-    <div :class="$style.newAppointmentForm">
+    <form :class="$style.newAppointmentForm" @submit.prevent>
       <h2 :class="$style.newAppointmentTitle">Patient Details</h2>
+      <div
+        v-if="
+          firebase.userProfile.role === 'staff' &&
+          firebase.userProfile.services.includes('reception')
+        "
+        :class="$style.newAppointmentFormRow"
+        cy-data="appointment-patient-email"
+      >
+        <label>Email</label>
+        <BaseInput v-model="email" />
+      </div>
       <div :class="$style.newAppointmentFormRow" cy-data="appointment-patient-firstname">
         <label>First Name</label>
         <BaseInput v-model="firstName" />
@@ -28,7 +39,7 @@
           </BaseButton>
         </transition>
       </div>
-    </div>
+    </form>
   </section>
 </template>
 
@@ -46,6 +57,12 @@ const firebase = useFirebaseStore()
 const newAppointmentStore = useNewAppointmentStore()
 const newAppointmentPatient = newAppointmentStore.newAppointmentPatient
 
+const email = ref(
+  newAppointmentPatient.email ||
+    (firebase.userProfile.role === 'staff' && firebase.userProfile.services.includes('reception')
+      ? ''
+      : firebase.userProfile.email)
+)
 const firstName = ref(newAppointmentPatient.firstName || firebase.userProfile.firstName)
 const lastName = ref(newAppointmentPatient.lastName || firebase.userProfile.lastName)
 const phone = ref(newAppointmentPatient.phone)
@@ -54,7 +71,7 @@ const updatePatientDetails = () => {
   newAppointmentStore.updateAppointmentPatient(
     firstName.value,
     lastName.value,
-    firebase.userEmail,
+    email.value,
     phone.value
   )
 

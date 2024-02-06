@@ -1,7 +1,7 @@
 <template>
   <BaseItem>
     <LoadingSpinner v-if="loading" />
-    <div v-else :class="$style.serviceContainer" data-cy="service-item">
+    <section v-else :class="$style.serviceContainer" data-cy="service-item">
       <img :src="serviceData.src" :class="$style.serviceImage" />
       <div :class="$style.serviceImageGradient" />
       <div :class="$style.serviceInformation" data-cy="service-item-information">
@@ -11,7 +11,7 @@
           {{ text }}
         </p>
       </div>
-    </div>
+    </section>
   </BaseItem>
 </template>
 

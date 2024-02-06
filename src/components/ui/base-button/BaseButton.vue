@@ -12,7 +12,7 @@
     v-else
     :type="type || 'button'"
     :disabled="loading"
-    :class="$style.baseButton"
+    :class="`${$style.baseButton} ${alt ? $style.alt : ''}`"
     @click="$emit('action')"
     data-cy="base-button-action"
   >
