@@ -42,6 +42,7 @@
   color: var(--color-brand-600);
 }
 
+.authLinksContainer,
 .navLinksContainer {
   display: flex;
   gap: 6.4rem;
@@ -56,6 +57,7 @@
     padding: 2.4rem 4.8rem;
   }
 
+  .authLinksContainer,
   .navLinksContainer {
     gap: 3.6rem;
   }
@@ -69,10 +71,14 @@
   .mobileHiddenLinks {
     display: none;
   }
+
+  .navLinksContainer {
+    display: none;
+  }
 }
 
-@media (max-width: 80em) {
-  .navLinksContainer {
+@media (max-width: 60em) {
+  .authLinksContainer {
     display: none;
   }
 }

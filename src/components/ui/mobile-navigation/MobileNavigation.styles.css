@@ -111,15 +111,17 @@
   }
 }
 
-@media (max-width: 40em) {
-  .smallScreenActions {
-    display: block;
-  }
-
+@media (max-width: 80em) {
   .authActionsContainer {
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
+  }
+}
+
+@media (max-width: 40em) {
+  .smallScreenActions {
+    display: block;
   }
 
   .mobileNavigationMenu {

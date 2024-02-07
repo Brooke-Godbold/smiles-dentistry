@@ -1,8 +1,5 @@
 import { defineConfig } from 'cypress'
 import { initPlugin } from '@frsource/cypress-plugin-visual-regression-diff/plugins'
-import { mergeConfig } from 'vite'
-import viteConfig from './vite.config.js'
-import { CypressEsm } from '@cypress/vite-plugin-cypress-esm'
 
 export default defineConfig({
   viewportWidth: 1920,
@@ -14,7 +11,7 @@ export default defineConfig({
 
   e2e: {
     specPattern: 'cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}',
-    baseUrl: 'http://localhost:5173',
+    baseUrl: 'https://all-smiles-dentistry.netlify.app/',
     setupNodeEvents(on, config) {
       initPlugin(on, config)
     }
@@ -30,11 +27,3 @@ export default defineConfig({
     }
   }
 })
-
-/*
-viteConfig: () => {
-        return mergeConfig(viteConfig, {
-          plugins: [CypressEsm()]
-        })
-      }
-*/

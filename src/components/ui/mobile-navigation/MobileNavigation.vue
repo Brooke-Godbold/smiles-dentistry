@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.mobileNavigation">
-    <BaseButton :loading="loading" @action="openMobileNav">
+    <BaseButton :loading="loading" @action="openMobileNav" data-cy="mobile-nav-button">
       <v-icon name="gi-hamburger-menu" />
     </BaseButton>
     <transition name="nav" mode="out-in">

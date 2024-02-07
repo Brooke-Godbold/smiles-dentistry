@@ -16,7 +16,8 @@ describe('<NewAppointmentPatient />', () => {
     const lastName = 'Smith'
     firebaseStore.userProfile = {
       firstName,
-      lastName
+      lastName,
+      role: 'user'
     }
 
     const appointmentStore = useNewAppointmentStore()
@@ -27,6 +28,7 @@ describe('<NewAppointmentPatient />', () => {
       phone: ''
     }
 
+    cy.get('[cy-data=appointment-patient-email]').should('not.exist')
     cy.get('[cy-data=appointment-patient-firstname]').find('input').should('have.value', firstName)
     cy.get('[cy-data=appointment-patient-lastname]').find('input').should('have.value', lastName)
     cy.get('[cy-data=appointment-patient-phone]').find('input').should('have.value', '')
@@ -42,7 +44,7 @@ describe('<NewAppointmentPatient />', () => {
     })
 
     const firebaseStore = useFirebaseStore()
-    firebaseStore.userProfile = {}
+    firebaseStore.userProfile = { role: 'user' }
 
     const appointmentStore = useNewAppointmentStore()
     const firstName = 'Jane'
@@ -55,11 +57,26 @@ describe('<NewAppointmentPatient />', () => {
       phone
     }
 
+    cy.get('[cy-data=appointment-patient-email]').should('not.exist')
     cy.get('[cy-data=appointment-patient-firstname]').find('input').should('have.value', firstName)
     cy.get('[cy-data=appointment-patient-lastname]').find('input').should('have.value', lastName)
     cy.get('[cy-data=appointment-patient-phone]').find('input').should('have.value', phone)
     cy.get('[cy-data=previous-button]').should('exist')
     cy.get('[cy-data=next-button]').should('exist')
+  })
+
+  it('renders New Appointment Patient for Reception Staff members', () => {
+    cy.mount(NewAppointmentPatient, {
+      global: {
+        plugins: [createTestingPinia({ createSpy: () => cy.spy() })]
+      }
+    })
+
+    const firebaseStore = useFirebaseStore()
+    firebaseStore.userProfile = { role: 'staff', services: ['reception'] }
+    firebaseStore.user = { email: 'jane@gmail.com' }
+
+    cy.get('[cy-data=appointment-patient-email]').find('input').should('have.value', '')
   })
 
   it('responds to button clicks correctly', () => {
@@ -89,7 +106,6 @@ describe('<NewAppointmentPatient />', () => {
 
     const appointmentStore = useNewAppointmentStore()
     appointmentStore.newAppointmentPatient = {}
-    cy.wrap(appointmentStore).as('appointmentStore')
 
     cy.get('[cy-data=appointment-patient-firstname]').find('input').type(testData.firstName)
     cy.get('[cy-data=appointment-patient-lastname]').find('input').type(testData.lastName)

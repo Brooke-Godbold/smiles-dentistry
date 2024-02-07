@@ -10,8 +10,9 @@ describe('<StaffAppointments />', () => {
     const testAppointment = {
       service: 'extraction',
       date: dateToTimestamp(new Date()),
+      price: 50,
       time: 14,
-      staff: 'John Smith',
+      staffName: 'John Smith',
       firstName: 'John',
       lastName: 'Smith',
       phone: '01245 669 669'

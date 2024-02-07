@@ -12,6 +12,7 @@
           :phone="appointment.phone"
           :price="appointment.price"
           :read-only="true"
+          cy-data="appointment-item"
         />
       </div>
     </BaseItem>

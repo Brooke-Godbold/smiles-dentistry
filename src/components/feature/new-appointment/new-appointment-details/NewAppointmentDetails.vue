@@ -1,10 +1,10 @@
 <template>
   <section :class="$style.newAppointmentContainer">
     <LoadingSpinner v-if="loading" />
-    <div v-else-if="data" :class="$style.upcomingAppointment">
+    <div v-else-if="data && data.length > 0" :class="$style.upcomingAppointment">
       <h2>Your Upcoming Appointment</h2>
       <AppointmentItem :appointment="data[0]" />
-      <p :class="$style.noCliniciansAvailable">
+      <p :class="$style.noCliniciansAvailable" cy-data="amend-appointment-text">
         If you wish to amend this, please call us on 07665 669669
       </p>
     </div>
@@ -69,6 +69,7 @@
           v-if="selectedClinician !== '' && availableClinicians.length > 0"
           :loading="loadingAppointmentData"
           @action="updateAppointmentDetails"
+          cy-data="next-button"
         >
           <p>Next</p>
         </BaseButton>
@@ -144,7 +145,7 @@ watch(appointmentDataError, (isError) => {
 })
 
 watch(data, (newData) => {
-  if (!newData) {
+  if (!newData || newData.length === 0) {
     loadServices()
     refreshStaffForService()
     refreshStaffForDate()

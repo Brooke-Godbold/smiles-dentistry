@@ -20,7 +20,7 @@
         data-cy="header-admin-nav-links"
       />
     </div>
-    <HeaderAuthActions :loading="loading" :class="$style.navLinksContainer" />
+    <HeaderAuthActions :loading="loading" :class="$style.authLinksContainer" />
     <MobileNavigation
       :loading="loading"
       :profile-links="profile"
