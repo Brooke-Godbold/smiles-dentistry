@@ -37,11 +37,13 @@ import { watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { UseFirebaseDocs } from '@/hooks/useFirebaseDocs'
 import { UseToast } from '@/hooks/useToast'
+import { useFirebaseStore } from '@/store/firebase'
 
 const { open } = UseToast.useToast()
 
 const emit = defineEmits(['previous'])
 
+const firebase = useFirebaseStore()
 const newAppointmentStore = useNewAppointmentStore()
 
 const router = useRouter()
