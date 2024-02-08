@@ -1,57 +1,76 @@
-# smiles-dentistry
+# All Smiles Dentistry
 
-This template should help get you started developing with Vue 3 in Vite.
+All Smiles Dentistry is an App for a Dental Surgery. It features pages for Services offered, and for Staff which work there. It also has user accounts, and users can book appointments at the surgery online. An Admin System allows users and appointments to be managed via the App. It features a specific and consistent branding throughout the App. It is built within Vue, and utilises features such as Vue Router, State Management via Pinia, Composition API, and CSS Animations via Transition blocks. The Database is provided via Firebase Realtime Database, Authentication is through Firebase Authentication, and Storage is through Firebase Storage Buckets. It also features integrations with Google Maps and Brevo for Mailing Lists.
 
-## Recommended IDE Setup
+## Important Notes
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+If you are working on this Project and require access for installation/development, contact the owner for the Firebase, Google, and Brevo API Keys.
 
-## Customize configuration
+## Installation
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Pull or Download the Repository to local machine
 
-## Project Setup
+Create your local .env file and add the required Environment Variables to this file
 
-```sh
+```yaml
+VITE_FIREBASE_API_KEY
+VITE_FIREBASE_AUTH_DOMAIN
+VITE_FIREBASE_DATABASE_URL
+VITE_FIREBASE_PROJECT_ID
+VITE_FIREBASE_STORAGE_BUCKET
+VITE_FIREBASE_MESSAGING_SENDER_ID
+VITE_FIREBASE_APP_ID
+VITE_FIREBASE_MEASUREMENT_ID
+
+VITE_GOOGLE_API_KEY
+
+VITE_BREVO_API_KEY
+```
+
+Install the modules:
+
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+To run the development server:
 
-```sh
+```bash
 npm run dev
 ```
 
-### Compile and Minify for Production
+To run Cypress:
 
-```sh
-npm run build
+```bash
+npm run cypress:open
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Technical Configuration
 
-```sh
-npm run test:unit
-```
+### Website
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+[https://all-smiles-dentistry.netlify.app/](https://all-smiles-dentistry.netlify.app/)
 
-```sh
-npm run test:e2e:dev
-```
+### Hosting
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+[Netlify Admin](https://app.netlify.com/sites/all-smiles-dentistry/)
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+The Live Website is hosted on Netlify. The dashboard can be used to configure the deployment, such as setting up Environment Variables.
 
-```sh
-npm run build
-npm run test:e2e
-```
+### Database & Authentication
 
-### Lint with [ESLint](https://eslint.org/)
+[Firebase](https://console.firebase.google.com/project/smiles-dentistry/overview)
 
-```sh
-npm run lint
-```
+The Database, Authentication & Storage are provided via Firebase. Aspects related to these can be managed via the Firebase Console.
+
+### Google Console
+
+[Google Console](https://console.cloud.google.com/apis/dashboard?project=smiles-dentistry-412620)
+
+Location services for Google Maps can be managed via the Google Console, such as the API keys required for this integration.
+
+### Brevo
+
+[Brevo](https://app.brevo.com/)
+
+Brevo is the chosen Mailing and SMTP Provider for this App. Mailing lists and API keys can be managed via the Brevo Dashboard.
